@@ -1,0 +1,199 @@
+#{extends '/portals/magasinier/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{stylesheet '../dist/css/AdminLTE.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+    <div>
+        <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-import"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a onclick="">LES ENTREES</a></span>
+              <span class="info-box-number">${stockEntree}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="glyphicon glyphicon-export"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="#">LES SORTIES</a></span>
+              <span class="info-box-number">${stockSortie}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="glyphicon glyphicon-shopping-cart"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="#">STOCK RESTANT</a></span>
+              <span class="info-box-number">${stockRestant}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+<br/>
+
+<h3 class="bg-gray-title">Effectuer <span class="hightlight">une Entrée</span> en Stock </h3>
+<form action="@{portals.magasinier.Affectation.newAffectation()}" method="POST">
+<fieldset>
+    <legend>
+        Gestion des entrées
+        <button id="btnEntreeStock" type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href = '@{newReception()}'">
+            <i class="icon-plus icon-white"></i>
+            Entrée en Stock
+        </button>
+<!--        <button id="btnSortieStock" type="submit" class="btn btn-default legend-btn flat-butt">
+            <i class="icon-plus icon-white"></i>
+            Sortie de Stock
+        </button>-->
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    
+    <div class="">
+        <table id="tablo" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+<!--                    <th>
+                        <input id="addAll" type="checkbox" onClick="checkAll(this)" value="true">
+                    </th>-->
+<!--                    <th>ID</th>-->
+                    <th>Référence</th>
+                    <th>Date Réception</th>
+                    <th>Logistique</th>
+                    <th>Description</th>
+                    <th>Nombre Compteur</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:stockInitials, as:'stock'}
+                <tr>
+<!--                    <th>
+                        <input id="addLine" name="idStock[]" type="checkbox" onClick="check(this)" value="${stock.id}">
+                    </th>-->
+<!--                    <td>${stock.id}</td>-->
+                    <td>${stock.referenceLivraison}</td>
+                    <td>${stock.dateReception.format('dd MMMM yyyy','fr')}</td>
+                    <td>${stock.logistique}</td>
+                    <td>${stock.description.toUpperCase()}</td>
+                    <td>${stock.nbCompteurRestant}</td>
+                    <td>
+                        <a class="dataTable-icon d_tb_option" href="@{editReception(stock.id)}"><img
+                                src="@{'/public/images/icons/edit.png'}" alt="edit"></a>
+                        <a class="dataTable-icon d_tb_option" href="javascript:;"
+                           onclick="confirmDelete(this, '@{deleteReception(stock.id)}')"><img
+                                src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+<!--    <div class="col-md-12 text-center" style="border: 1px black dotted;">
+      <ul class="pagination pagination-lg pager" id="myPager"></ul>
+      </div>-->
+</div>   
+</form>
+<style>
+    table td{
+        text-align: center;
+    }
+    .table-responsive {
+        height:180px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#tablo').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+    
+//    document.getElementById('btnSortieStock').style.visibility = 'hidden';
+//    function checkAll(ele) {
+//     var checkboxes = document.getElementsByTagName('input');
+//     if (ele.checked) {
+//         for (var i = 0; i < checkboxes.length; i++) {
+//             if (checkboxes[i].type == 'checkbox') {
+//                 checkboxes[i].checked = true;
+//                 document.getElementById('btnEntreeStock').style.visibility = 'hidden';
+//                 document.getElementById('btnSortieStock').style.visibility = 'visible';
+//             }
+//         }
+//     } else {
+//         for (var i = 0; i < checkboxes.length; i++) {
+//             console.log(i)
+//             if (checkboxes[i].type == 'checkbox') {
+//                 checkboxes[i].checked = false;
+//                 document.getElementById('btnEntreeStock').style.visibility = 'visible';
+//                 document.getElementById('btnSortieStock').style.visibility = 'hidden';
+//             }
+//         }
+//     }
+//    }
+// 
+//    function check(ele){
+//     var checkboxes = document.getElementsByTagName('input');
+//     if (ele.checked) {
+//            document.getElementById('btnEntreeStock').style.visibility = 'hidden';
+//            document.getElementById('btnSortieStock').style.visibility = 'visible';
+//     } else {
+//            document.getElementById('btnEntreeStock').style.visibility = 'visible';
+//            document.getElementById('btnSortieStock').style.visibility = 'hidden';
+//     }
+//    }
+    
+</script>

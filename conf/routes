@@ -1,0 +1,44 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Import Secure routes
+*      /                                        module:secure
+# Login
+GET	/login		                  	Secure.login
+
+# Home page
+GET     /                                       Secure.login
+GET     /ads                                    Application.ads
+GET     /clear                                  Application.clear
+GET     /fill                                   Application.fill
+GET     /reset                                  Application.reset
+
+# Registering
+GET	/registration/registersuccess		Registration.registersuccess
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+GET     /data/                                  staticDir:data
+GET     /app/assets/                            staticDir:app/assets
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}
+
+
+# Catch all subpackages portals
+*       /portals/admin/home                                   portals.admin.dashboard.index
+*       /portals/admin/{controller}/{action}                  portals.admin.{controller}.{action}
+
+*       /portals/magasinier/dashboard                            portals.magasinier.dashboard.index
+*       /portals/magasinier/{controller}/{action}                portals.magasinier.{controller}.{action}
+
+*       /portals/admin/users/                                 portals.admin.users
+*       /portals/admin/users/                                 portals.admin.users.index
+*       /portals/admin/users/{action}                         portals.admin.users.{action}
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}

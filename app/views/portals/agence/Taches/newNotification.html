@@ -1,0 +1,144 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../pwdwidget/pwdwidget.css' /}
+#{/set}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+<h3 class="bg-gray-title">Action de contrôle d'une <span class="hightlight">Pose de compteur</span> </h3>
+
+
+<div class="row-fluid">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            *{#{if error.key != 'user' && error.key != 'address'}*
+            *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+            <li>${error}</li>
+            *{#{/if}}*
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+</div>
+<form class="form-horizontal" action="@{saveNewNotification()}" method="POST">
+    <div class="tab-content">
+        <fieldset>
+            <legend>Donner votre appréciation
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+            
+    #{field 'poseCompteur.id'}
+        <input type="text" class="hide form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+    #{/}
+    #{field 'poseCompteur.compteur.numeroCompteur'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-3 control-label" for="${field.name}">&{field.name}*:</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control ${field.errorClass}" placeholder="${field.name}"
+                   onfocus="this.blur()"   name="${field.name}" id="${field.id}" value="${field.value}" />
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/} 
+            
+    #{field 'appreciation'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+        <div class="col-sm-4">
+            <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+
+                <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                    <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                    <b class="caret selectbox-caret"></b>
+                </a> &nbsp;
+                <span class="error-msg">${field.error}</span>
+                <div class="bfh-selectbox-options">
+                    <input type="text" class="bfh-selectbox-filter">
+                    <div role="listbox">
+                        <ul role="option">
+                            #{list items:appreciations, as:'app'}
+                            <li><a href="#" data-option="${app.id}">${app.appreciation}</a></li>
+                            #{/list}
+                        </ul>
+                    </div>
+                </div>                       
+            </div>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    #{field 'commentaire'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-3 control-label" for="${field.name}">&{field.name}:</label>
+        <div class="col-sm-4">
+            <textarea class="form-control" name="${field.name}" placeholder="Mettrez votre commentaire ici..." rows="2"></textarea>
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}    
+    <span class="fl-right" style="margin:0px 250px 25px 0px; line-height: 40px;">
+                <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                        flat-border-butt flat-primary-border-butt" >Valider</button>
+            </span>
+            <div style="clear: both" ></div>
+
+        </fieldset>
+    </div>
+</form>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#myTab a").click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('#filtreByCompte').click(function (e) {
+            $('.blc-comptes').show();
+            $('.blc-users').hide();
+        });
+        $('#filtreByUser').click(function (e) {
+            $('.blc-users').show();
+            $('.blc-comptes').hide();
+        });
+
+        $('.bfh-selectbox-options ul li').click(function () {
+            $('#nomPartner').val($(this).find('a').html());
+        });
+
+            $('.reg-select').click(function() {
+
+                    $().bfhselectbox('toggle');
+
+            });
+    });
+
+
+</script>

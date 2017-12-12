@@ -1,0 +1,166 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../pwdwidget/pwdwidget.css' /}
+#{/set}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+<form class="form-horizontal" action="@{saveEditProfil()}" method="POST">
+    <div class="row-fluid">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                *{#{if error.key != 'user' && error.key != 'address'}*
+                *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+                <li>${error}</li>
+                *{#{/if}}*
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+    </div>
+
+    <div class="row-fluid">
+        <fieldset>
+            <legend>Profil utilisateur
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+
+            #{field 'profil.id'}
+            <input type="text" class="hide input-xlarge" name="${field.name}" id="${field.id}" value="${field.value}"/>
+            #{/}
+            #{field 'profil.libProfil'}
+            <div class="control-group offset2 col-md-10">
+                <label class="control-label" for="${field.id}">Lib. Profil:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" name="${field.name}" id="${field.id}" value="${field.value}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'profil.droit'}
+            <div class="control-group offset2 col-md-10">
+                <label class="control-label" for="${field.id}">Droit:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge"
+                           name="${field.name}" id="${field.id}" value="${field.value}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            <div style="clear: both">
+                <div class="controls">
+                    <button type="submit" id="signin" class="flat-butt flat-primary-butt
+                            flat-border-butt flat-primary-border-butt" >Valider</button>
+                </div>
+            </div>
+            <p>
+                <span class="fl-right">
+                    <label class="checkbox">
+                        <input id="checkAll" type="checkbox"> Tout sélectionner
+                    </label>
+                </span>            
+            </p>
+
+            <br>
+            <div class="blc-comptes">
+                <table id="table_droit" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Liste des droits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #{list items:droits, as:'droit'}
+                        <tr>
+                            <td><input name="droitCheck" class="droitCheck" value="${droit.name()}" type="checkbox" /></td>
+                            <td class="droit">${droit.toString()}</td>
+                        </tr>
+                        #{/list}
+                    </tbody>
+                </table>
+            </div>
+
+    </div>
+
+</fieldset>
+</div>
+</form>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('.blc-comptes table').each(function () {
+            $("#table_droit").dataTable({
+                "sScrollY": "400px",
+                "bPaginate": false,
+                "bScrollCollapse": true
+
+            });
+        });
+        var droit = $("#profil_droit").val().toUpperCase();
+        var droits = droit.split(";");
+        $("#table_droit tr").each(function (index) {
+            for (var cpt = 0; cpt < droits.length; cpt++) {
+                if ($(this).find(".droit").html() === droits[cpt]) {
+                    $(this).find('.droitCheck').prop("checked", true);
+                }
+            }
+        });
+
+        $("#myTab a").click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('#filtreByCompte').click(function (e) {
+            $('.blc-comptes').show();
+            $('.blc-users').hide();
+        });
+        $('#filtreByUser').click(function (e) {
+            $('.blc-users').show();
+            $('.blc-comptes').hide();
+        });
+    });
+
+    $("#checkAll").change(function () {
+        var check = $(this).is(":checked");
+        $('.droitCheck').prop("checked", check).trigger('change');
+    });
+
+    $('.droitCheck').change(function () {
+        var check = $(this).is(":checked");
+        var lib_droit = $(this).closest('tr').find('.droit').html() + ";";
+        var droit = $("#profil_droit").val().toUpperCase();
+        if (check) {
+            droit = $("#profil_droit").val();
+            $("#profil_droit").val(droit + lib_droit);
+        } else {
+            droit = droit.replace(";" + lib_droit, ";");
+            droit = droit.replace(lib_droit, "");
+            $("#profil_droit").val(droit);
+        }
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().html()))
+            window.location = link;
+    }
+</script>

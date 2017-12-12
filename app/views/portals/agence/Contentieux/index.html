@@ -1,0 +1,102 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Les <span class="hightlight"> Contentieux</span> </h3>
+
+<div class="tab-content">
+        #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    
+        <table id="example" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Signalé par:</th>
+                    <th>Stock Envoyé par</th>
+<!--                    <th>Date Envoie</th>-->
+                    <th>Ecart</th>
+<!--                    <th>Date Réception</th>-->
+                    <th>Détails/ PV</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:listContentieux, as:'contentieux'}
+                <tr>
+                    <td>${contentieux.id}</td>
+                    <td>
+                        #{if contentieux.entreeEnStock.user.account instanceof models.Magasinier}
+                        ${contentieux.entreeEnStock.sortieEnStock.user.account}
+                        #{/if}
+                        #{if contentieux.entreeEnStock.user.account instanceof models.Agence}
+                        ${contentieux.entreeEnStock.user.account.nomAgence}
+                        #{/if}
+                    </td>
+                    <td>
+                        #{if contentieux.entreeEnStock.sortieEnStock.user.account instanceof models.Magasinier}
+                        ${contentieux.entreeEnStock.sortieEnStock.user.account}
+                        #{/if}
+                        #{if contentieux.entreeEnStock.sortieEnStock.user.account instanceof models.Agence}
+                        ${contentieux.entreeEnStock.user.account.nomAgence}
+                        #{/if}
+                    </td>
+<!--                    <td>${contentieux.entreeEnStock.sortieEnStock.dateSortie.format('dd MMMM yyyy H:mm:ss','fr')}</td>-->                   
+                    <td>${contentieux.ecart}</td>
+<!--                    <td>${contentieux.dateSave.format('dd MMMM yyyy H:mm:ss','fr')}</td>-->
+                    <td>
+                        #{if contentieux.traiter==false}
+                            <a class="dataTable-icon" href="@{details(contentieux.id)}">
+                            <img src="@{'/public/images/icons/details.png'}" alt="edit"></a>
+                        #{/if}
+                        #{if contentieux.traiter==true}                        
+                        <button type="button" class="btn btn-default btn-sm" onClick="window.location.href = '@{portals.agence.Contentieux.getFile(contentieux.id)}'">
+                            <span class="glyphicon glyphicon-download-alt"></span> Download
+                        </button>
+                        #{/if}
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+    
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+
+</script>

@@ -1,0 +1,126 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set title:'CGTBUILDER' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Management <span class="hightlight">des Magasins</span> <span class="hightlight"></span> </h3>
+
+<br>
+<fieldset>
+    <legend>
+        Gestion des magasins
+        <button type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href = '@{newMagasin()}'">
+            <i class="icon-plus icon-white"></i>
+            Ajouter un magasin
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    <div class="blc-comptes">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Code Magasin</th>
+                    <th>Nom Magasin</th>
+                    <th>Statut</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:magasins, as:'magasin'}
+                <tr>
+                    <td>${magasin.id}</td>
+                    <td>${magasin.codeMagasin}</td>
+                    <td>${magasin.nomMagasin.toUpperCase()}</td>
+                    <td>${magasin.enable==true?'Actif':'Inactif'}</td>
+                    <td>
+                        <a class="dataTable-icon d_tb_option" href="@{editMagasin(magasin.id)}"><img
+                                src="@{'/public/images/icons/edit.png'}" alt="edit"></a>
+                        <a class="dataTable-icon d_tb_option" href="javascript:;"
+                           onclick="confirmDelete(this, '@{deleteMagasin(magasin.id)}')"><img
+                                src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('.tab-pane table').each(function () {
+            $(this).dataTable({
+                "oLanguage": {
+                    "sLengthMenu": "Afficher _MENU_ Lignes par page",
+                    "sSearch": "Chercher",
+                    "oPaginate": {
+                        "sNext": "Suivant",
+                        "sPrevious": "Précedent"
+                    },
+                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_ lignes",
+                    "sInfoEmpty": "Aucune valeur à Afficher"
+                }
+
+            });
+        });
+
+        $("#myTab a").click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('#filtreByCompte').click(function (e) {
+            $('.blc-comptes').show();
+            $('.blc-users').hide();
+        });
+        $('#filtreByUser').click(function (e) {
+            $('.blc-users').show();
+            $('.blc-comptes').hide();
+        });
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+</script>

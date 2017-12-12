@@ -1,0 +1,89 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set title:'Centre de gestion afribills' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+<h3 class="bg-gray-title">Compte <span class="hightlight">${account.companyName}</span></h3>
+
+
+<fildset>
+    <legend>Détails Générals
+        <button type=button id="doEditAccount" class="legend-btn flat-butt"
+                onClick="window.location.href = '@{editAccount(account.id, account.getClass().getSimpleName())}'">
+            <i class="icon-pencil icon-white"></i>
+            Editer le compte
+        </button>
+    </legend>
+    <div class="text-center" style="height: 50px; background: #ccc"><span>SOLUTION en développement</span></div>
+
+</fildset>
+
+<fildset>
+    <legend>Listes des utilisateurs</legend>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom(s)</th>
+
+                <th>Login</th>
+                <th>Pt de vente</th>
+                <th>Profil</th>
+                <th>Statut</th>
+                <th class="span2">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            #{list items:account.users, as:'acUser'}
+            <tr>
+                <td>${acUser.firstname}</td>
+                <td>${acUser.lastname}</td>
+
+                <td>${acUser.username}</td>
+                <td> ${acUser.pointVente==null?"":acUser.pointVente.libPoint}</td>
+                <td>${acUser.profil==null?"":acUser.profil.libProfil}</td>
+                <td>Actif</td>
+                <td>
+                    *{<a class="dataTable-icon" href="" onclick="alert('gestion des permissions en cours d\'implémentation')">}*
+                        *{<img src="@{'/public/images/icons/acl.png'}" alt="edit"></a>}*
+                    <a class="dataTable-icon" href="@{portals.admin.AccountsAndUsers.editUser(acUser.id)}">
+                        <img src="@{'/public/images/icons/user_edit.png'}" alt="edit"></a>
+                    <a class="dataTable-icon" href="#"  onclick="confirmDelete('@{portals.admin.AccountsAndUsers.deleteUser(acUser.id)}')">
+                        <img src="@{'/public/images/icons/user_delete.png'}" alt="delete"></a>
+                    <a class="dataTable-icon" href="#">
+                        <img src="@{'/public/images/icons/user_go.png'}" alt="se connecter"></a>
+                </td>
+            </tr>
+            #{/list}
+        </tbody>
+    </table>
+</fildset>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('table').dataTable({
+            "oLanguage": {
+                "sLengthMenu": "Afficher _MENU_ Lignes par page",
+                "sSearch": "Chercher",
+                "oPaginate": {
+                    "sNext": "Suivant",
+                    "sPrevious": "Précedent",
+                },
+                "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_ lignes",
+                "sInfoEmpty": "Aucune valeur à Afficher",
+            }
+
+        });
+    });
+
+</script>

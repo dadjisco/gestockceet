@@ -1,0 +1,35 @@
+#{if user!=null}
+<header>
+    <div id="menu-wraper">
+        <div id="head-portal" class="navbar bg-gray-title" style="font-size: 15px;">
+            <div class="navbar-inner">
+                <div class="pull-left">
+                    *{<a class="brand" href="@{Application.index()}">}*
+                        <img src="@{'/public/images/logos/ceet.png'}" alt="logo" style="width: 30%; height: 30%;">
+                    *{</a>}*
+                    <span>&gt;</span>
+                    <strong>&nbsp;&nbsp; MAGASINIER </strong>
+                </div>
+
+                <div class="clearfix nav-collapse-container">
+                    <div class="pull-right option-right">
+                        <strong>                       
+                            <a href="@{portals.magasinier.Dashboard.index()}" style="color:#fff">${user.username}</a>  &nbsp;&nbsp; |
+                        </strong>
+                        <small>
+                            <a href="@{Secure.logout()}">Déconnexion</a>
+                        </small>
+                        <a class="btn btn-default btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon icon-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@{portals.magasinier.User.profile()}">Profil</a></li>
+                            <li><a href="@{portals.magasinier.User.account()}">Compte</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+#{/if}

@@ -1,0 +1,66 @@
+#{extends '/portals/magasinier/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+<h3 class="bg-gray-title">Chargement des <span class="hightlight">compteurs</span>  </h3>
+<form class="form-horizontal" action="@{portals.magasinier.Compteurs.readingFile()}" method="POST" enctype="multipart/form-data">
+<br>
+<div class="row-fluid">
+        <fieldset>
+            <legend>Charger Compteur
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+      
+    #{field 'refLivraison'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+            <div class="col-sm-4">
+                <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                    <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+
+                    <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                        <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                        <b class="caret selectbox-caret"></b>
+                    </a> &nbsp;
+                    <span class="error-msg">${field.error}</span>
+                    <div class="bfh-selectbox-options">
+                        <input type="text" class="bfh-selectbox-filter">
+                        <div role="listbox">
+                            <ul role="option">
+                                <li><a href="#" data-option=""></a>
+                                #{list items:livraisons, as:'livraison'}
+                                <li><a href="#" data-option="${livraison.id}">${livraison.referenceLivraison}</a></li>
+                                #{/list}
+                            </ul>
+                        </div>
+                    </div>                       
+                </div>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}  
+        #{field 'compteurFile'}
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="${field.id}"><b>Choisissez votre fichier CSV (.csv)</b></label>
+            <div class="col-sm-4">
+                <input type="file" class="form-control ${field.errorClass}" required="true"
+                       name="${field.name}" id="files" accept="application/csv"/>
+            </div>
+        </div>
+        #{/}
+            <span class="fl-right" style="margin:0px 250px 25px 0px; line-height: 100px;">
+                <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                        flat-border-butt flat-primary-border-butt" >Valider</button>
+            </span>
+            <div style="clear: both" ></div>    
+ 
+        </fieldset>
+    </div>
+</form>

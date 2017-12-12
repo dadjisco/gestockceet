@@ -1,0 +1,74 @@
+#{extends 'main.html' /}
+#{set title:'Accueil' /}
+
+%{
+userAccount = user.account.getClass().getSimpleName();
+soustraitant = utils.config.AccountType.SOUSTRAITANT.getName();
+}%
+
+<div class="container clearfix">
+    <div class="alert alert-warning alert-dismissable" style="text-align:center">  
+        <a class="close" data-dismiss="alert">x</a>  
+        <strong>Bienvenue sur votre espace de travail.</strong> 
+    </div>
+
+    <div class="tabbable">
+        <ul class="nav nav-pills nav-stacked col-md-3 green-pills no-margin">
+            #{if user.hasAccessTo('LISTE_COMPTEURS_AFFECTER')}
+            <li class="#{if action=='liste_compteurs_affecter'}active#{/if}"><a href="#tabs5-pane3" data-toggle="tab">Compteurs affectés</a></li>
+            #{/if}
+            #{if user.hasAccessTo('LISTE_DES_TACHES')}
+            <li class="#{if action=='liste_des_taches'}active#{/if}"><a href="#tabs5-pane4" data-toggle="tab">Liste des tâches</a></li>
+            #{/if}
+            #{if user.hasAccessTo('POSER_COMPTEUR')}
+            <li class="#{if action=='poser_compteur'}active#{/if}"><a href="#tabs5-pane1" data-toggle="tab">Poser Compteur</a></li>
+            #{/if}
+            #{if user.hasAccessTo('CONTROLER_POSE')}
+            <li class="#{if action=='controler_pose'}active#{/if}"><a href="#tabs5-pane2" data-toggle="tab">Contrôler Pose</a></li>
+            #{/if}
+        </ul>
+        <div class="tab-content col-md-9">
+            <div id="tabs5-pane1" class="tab-pane #{if action=='poser_compteur'}active#{/if}">
+                #{if action=='poser_compteur'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane2" class="tab-pane #{if action=='controler_pose'}active#{/if}">
+                #{if action=='controler_pose'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane3" class="tab-pane #{if action=='liste_compteurs_affecter'}active#{/if}">
+                #{if action=='liste_compteurs_affecter'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane4" class="tab-pane #{if action=='liste_des_taches'}active#{/if}">
+                #{if action=='liste_des_taches'}
+                #{doLayout /}
+                #{/if}
+            </div>
+        </div>
+        </div>
+    </div> 
+<!--</div>-->
+
+<script>
+    $('a[href="#tabs5-pane1"]').click(function() {
+        window.location.href = "@{portals.soustraitant.posercompteurs.effectuerPose()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane2"]').click(function() {
+        window.location.href = "@{portals.soustraitant.taches.newNotification()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane3"]').click(function() {
+        window.location.href = "@{portals.soustraitant.posercompteurs.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane4"]').click(function() {
+        window.location.href = "@{portals.soustraitant.taches.index()}";
+        e.preventDefault();
+    });
+</script>
+

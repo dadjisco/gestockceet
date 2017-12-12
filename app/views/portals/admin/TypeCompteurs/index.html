@@ -1,0 +1,91 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Management des<span class="hightlight"> Types Compteurs</span> </h3>
+
+<br>
+<fieldset>
+    <legend>
+        Gestion des types compteurs
+        <button type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href = '@{newTypecompteur()}'">
+            <i class="icon-plus icon-white"></i>
+            Ajouter type compteur
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    <div class="blc-comptes">
+        <table id="tablo" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type Compteur</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:typeCompteurs, as:'typeCompteur'}
+                <tr>
+                    <td>${typeCompteur.id}</td>
+                    <td>${typeCompteur.libelleCompteur}</td>
+                    <td>
+                        <a class="dataTable-icon d_tb_option" href="@{editTypeCompteur(typeCompteur.id)}"><img
+                                src="@{'/public/images/icons/edit.png'}" alt="edit"></a>
+                        <a class="dataTable-icon d_tb_option" href="javascript:;"
+                           onclick="confirmDelete(this, '@{deleteTypeCompteur(typeCompteur.id)}')"><img
+                                src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+    $('#tablo').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+</script>

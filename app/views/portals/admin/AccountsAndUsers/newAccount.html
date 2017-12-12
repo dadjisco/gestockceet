@@ -1,0 +1,297 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../pwdwidget/pwdwidget.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../pwdwidget/pwdwidget.js' /}
+#{script '../pwdwidget/pwdwidget-custom.js' /}
+#{/set}
+
+%{
+AGENCE = utils.config.AccountType.AGENCE.getName();
+MAGASINIER = utils.config.AccountType.MAGASINIER.getName();
+SOUSTRAITANT = utils.config.AccountType.SOUSTRAITANT.getName();
+}%
+
+<h3 class="bg-gray-title">Nouveau compte<span class="hightlight">
+        #{if type.equals(AGENCE)} Agence#{/if}
+        #{if type.equals(MAGASINIER)} Magasinier#{/if}
+        #{if type.equals(SOUSTRAITANT)} Soustraitant#{/if}
+    </span></h3>
+
+<form class="form-horizontal" action="@{saveNewAccount()}" method="POST">
+    <div class="row">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                <li>${error}</li>
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+    </div>
+
+    <div class="row">
+        <input id="type-account" type="hidden" name="accountType" value="${type}">
+    </div>
+
+    <div class="row">
+        <fieldset>
+            <legend>Compte & utilisateur
+                <button type=button id="cancelEditAccount" class="legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+            
+<!--            #{if type.equals(SOUSTRAITANT)}
+            #{field 'companyName'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <div id="accounts" class="bfh-selectbox bfh-profils control-bfh-selectbox ${field.errorClass}" data-country="${flash[field.name]}" data-flags="true">
+                        <input name="account" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                        <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option=""></span>
+                            <b class="caret selectbox-caret"></b>
+                        </a> &nbsp;
+                        <span class="error-msg">${field.error}</span>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option">
+                                    <li><a tabindex="-1" href="#" data-option=""></a></li>
+                                    #{list items:accounts, as:'account'}
+                                    <li><a tabindex="-1" href="#" data-option="${account.id}">${account.raisonSociale}</a></li>
+                                    #{/list}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass} " name="${field.name}"
+                           id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+                    <div class="col-sm-2">
+                        <button class="flat-butt flat-primary-butt
+                            flat-border-butt flat-primary-border-butt" >Créer un</button>
+                    </div>
+            </div>
+            </div>
+            #{/}
+            #{/if}-->
+            
+            #{if type.equals(SOUSTRAITANT)}
+            #{field 'companyName'}
+            <div id="blc-lastname" class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass} " name="${field.name}"
+                           id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{/if}
+
+            #{field 'user.lastname'}
+            <div id="blc-lastname" class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass} " name="${field.name}"
+                           id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'user.firstname'}
+            <div id="blc-firstname" class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}" name="${field.name}"
+                           id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'user.email'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+            #{field 'Profil'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <div id="profils" class="bfh-selectbox bfh-profils control-bfh-selectbox ${field.errorClass}" data-country="${flash[field.name]}" data-flags="true">
+                        <input name="profil" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                        <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option=""></span>
+                            <b class="caret selectbox-caret"></b>
+                        </a> &nbsp;
+                        <span class="error-msg">${field.error}</span>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option">
+                                    <li><a tabindex="-1" href="#" data-option=""></a></li>
+                                    #{list items:profils, as:'profil'}
+                                    <li><a tabindex="-1" href="#" data-option="${profil.id}">${profil.libProfil}</a></li>
+                                    #{/list}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            #{field 'user.username'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass} "
+                           name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'user.password'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <div id='thepwddiv' class='pwdwidgetdiv input-xlarge'></div>
+                    <span class="error-msg">${field.error}</span>
+                    <script  type="text/javascript" >
+                        var pwdwidget = new PasswordWidget('thepwddiv', 'regpwd');
+                        pwdwidget.MakePWDWidget = _MakePWDWidgetCustom;
+                        pwdwidget.MakePWDWidget('${field.name}', '${field.id}',
+                                '${field.errorClass}', '${field.error}');
+                    </script>
+                    <noscript>
+                    <div><input type='password' id='regpwd' name='regpwd' /></div>
+                    </noscript>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'passwordCheck'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="password" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+        </fieldset>
+    </div>
+
+    <div class="row">
+        <fieldset>
+            <legend>Adresse compte</legend>
+            #{field 'address.complement'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.city'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.state'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.postCode'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.phone'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+        </fieldset>
+    </div>
+    <div class="row">
+        <fieldset>
+            <legend>Validation</legend>
+            #{field 'code'}
+            <div class="form-group ${field.errorClass} ">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <img src="@{Application.captcha(randomID)}" style="display:block;margin-left: 200px;" />
+                    <input type="text" class="form-control ${field.errorClass}" name="${field.name}" id="${field.id}" value="" />
+                    <input type="hidden" name="randomID" value="${randomID}" />
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <button type="submit" id="signin" class="flat-butt flat-primary-butt
+                            flat-border-butt flat-primary-border-butt" >Valider</button>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</form>

@@ -1,0 +1,93 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Créer <span class="hightlight">nouveau</span> Compteur </h3>
+
+<br>
+<fieldset>
+    <legend>
+        Gestion des compteurs
+        <button type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href = '@{newCompteur()}'">
+            <i class="icon-plus icon-white"></i>
+            Ajouter nouveau Compteur
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    
+    <table id="tablo" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>numeroCompteur</th>
+                    <th>numeroSerieCompteur</th>
+                    <th>puissance</th>
+                    <th>typeCompteur</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:compteurs, as:'compteur'}
+                <tr>
+                    <td>${compteur.id}</td>
+                    <td>${compteur.numeroCompteur}</td>
+                    <td>${compteur.numeroSerieCompteur}</td>
+                    <td>${compteur.puissance}</td>
+                    <td>${compteur.typeCompteur}</td>
+                    <td>
+                        <a class="dataTable-icon d_tb_option" href="@{editCompteur(compteur.id)}"><img
+                                src="@{'/public/images/icons/edit.png'}" alt="edit"></a>
+                        <a class="dataTable-icon d_tb_option" href="javascript:;"
+                           onclick="confirmDelete(this, '@{deleteCompteur(compteur.id)}')"><img
+                                src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+     $('#tablo').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+</script>

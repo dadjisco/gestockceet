@@ -1,0 +1,23 @@
+<br/>
+    <table id="tablo2" class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Référence Commande</th>
+                <th>Référence Livraison</th>
+                <th>Date d'affectation</th>
+                <th>Nombre Compteur</th>
+            </tr>
+        </thead>
+        <tbody>
+            #{list items:stockRestants, as:'str'}
+            <tr>
+                <td>${str.id}</td>
+                <td>${str.commande.refCommande}</td>
+                <td>${str.referenceLivraison}</td>
+                <td>${str.dateReception.format('dd MMMM yyyy','fr')}</td>
+                <td>${str.nbCompteurRestant}</td>
+            </tr>
+            #{/list}
+        </tbody>
+    </table>

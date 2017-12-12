@@ -1,0 +1,98 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Envoyer une dem<span class="hightlight">ande compteur</span> </h3>
+
+<br>
+<fieldset>
+    <legend>
+        Gestion des demandes compteurs
+        <button type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href = '@{newDemande()}'">
+            <i class="icon-plus icon-white"></i>
+            Envoyer Demande Compteur
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+        #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+
+        <table id="tablo" class="table table-bordered">
+            <thead>
+                <tr>
+<!--                    <th>ID</th>-->
+                    <th>Date Demande</th>
+                    <th>Quantité Demandé</th>
+<!--                    <th>Satisfait</th>
+                    <th>Traité</th>-->
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:demandes, as:'demand'}
+                <tr>
+<!--                    <td>${demand.id}</td>-->
+                    <td>${demand.dateEnvoie.format('dd MMMM yyyy','fr')}</td>
+                    <td>${demand.getQteCptDemander(demand.id)}</td>
+<!--                    <td>${demand.satisfait}</td>
+                    <td>
+                        #{if demand.nivoTraitement==0} NON #{/if}
+                        #{if demand.nivoTraitement==1} PARTIEL #{/if}
+                        #{if demand.nivoTraitement==2} OUI #{/if}
+                    </td>-->
+                    <td>
+<!--                        <a class="dataTable-icon d_tb_option" href="@{editDemande(demand.id)}"><img
+                                src="@{'/public/images/icons/edit.png'}" alt="edit"></a>-->
+                        <a class="dataTable-icon d_tb_option" href="javascript:;"
+                           onclick="confirmDelete(this, '@{deleteDemande(demand.id)}')"><img
+                                src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+</div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('#tablo').DataTable();
+    });
+    
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+
+</script>

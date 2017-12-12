@@ -1,0 +1,251 @@
+#{extends '/portals/magasinier/Dashboard/index.html' /}
+#{set title:'Reception' /}
+#{set 'moreStyles'}
+#{stylesheet '../pwdwidget/pwdwidget.css' /}
+#{/set}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+<div class="panel panel-info">
+    <div class="panel-heading">Informations sur les unitées de mesure pré-définies (l'unité utilisé est <b>le Compteur</b>)</div>
+    <div class="panel-body">
+        <div class="control-group">
+            <div class="controls">
+                <div style=" display:inline-table; padding-left: 50px;">
+                    #{if lesunites.size()==0}
+                    Unité non définie ou paramétrée, veuillez juste renseigner le nombre total de compteur
+                    #{/if}
+
+                    #{list items:lesunites, as:'unite'}
+                    <label class="checkbox-inline">
+                        <li>${unite.libelleUnite} (${unite.nbCompteur})</li>
+                    </label>
+                    #{/list}                       
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="bg-gray-title">Nouveau <span class="hightlight">Entrée en</span>  <span class="hightlight">Stock</span> </h3>
+
+<div class="row-fluid">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            *{#{if error.key != 'user' && error.key != 'address'}*
+            *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+            <li>${error}</li>
+            *{#{/if}}*
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+</div>
+<form class="form-horizontal" action="@{saveNewReception()}" method="POST">
+    <div class="row">
+
+        <fieldset>
+            <legend>Nouveau Stock
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+            #{field 'refCommande'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                        <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                        
+                        <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                            <b class="caret selectbox-caret"></b>
+                        </a> &nbsp;
+                        <span class="error-msg">${field.error}</span>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option">
+                                    <li><a href="#" data-option=""></a>
+                                    #{list items:commandes, as:'commande'}
+                                    <li><a href="#" data-option="${commande.id}">${commande.refCommande}</a></li>
+                                    #{/list}
+                                </ul>
+                            </div>
+                        </div>                       
+                    </div>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+            #{field 'refLivraison'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+            #{field 'dateReception'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="Date" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+            #{field 'logistique'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+<!--            #{field 'description'}
+            <div class="form-group ${field.errorClass}" id="description">
+                <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}-->
+
+            <div class="controls">
+                <div class="numUniteCompteur-parent">
+                    <div id="numUniteCompteur" class="mg-top">
+                        
+                        #{field 'uniteAppreciation'}
+                        <div class="form-group ${field.errorClass}" id="unite">
+                            <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+                            <div class="col-sm-4">
+                                <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                                    <input name="${field.name}[]" id="${field.id}" type="hidden" value="${flash[field.name]}">
+
+                                    <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                                        <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                                        <b class="caret selectbox-caret"></b>
+                                    </a> &nbsp;
+                                    <span class="error-msg">${field.error}</span>
+                                    <div class="bfh-selectbox-options">
+                                        <input type="text" class="bfh-selectbox-filter">
+                                        <div role="listbox">
+                                            <ul id="uniteAppreciations" role="option" onchange="">
+                                                <li><a href="#" data-option=""></a>
+                                                    #{list items:lesunites, as:'unite'}
+                                                <li><a href="#" data-option="${unite.id}">${unite.libelleUnite}</a></li>
+                                                #{/list}
+                                            </ul>
+                                        </div>
+                                    </div>                       
+                                </div>
+                                <p class="help-block">Supporting help text</p>
+                            </div>
+                        </div>
+                        #{/}
+
+                        #{field 'nbDUnite'}
+                        <div class="form-group ${field.errorClass}" id="nbDUnite">
+                            <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control ${field.errorClass}"
+                                       name="${field.name}[]" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+                                <span class="error-msg">${field.error} </span>
+                                <p class="help-block">Supporting help text</p>
+                            </div>
+                        </div>
+                        #{/}
+
+<!--                        #{field 'nombreCompteur'}
+                        <div class="form-group ${field.errorClass}" id="nombreCompteur" style="display: none;">
+                            <label class="col-sm-3 control-label" for="${field.id}">&{field.name}:</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control ${field.errorClass}"
+                                       name="${field.name}[]" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+                                <span class="error-msg">${field.error} </span>
+                                <p class="help-block">Supporting help text</p>
+                            </div>
+                        </div>
+                        #{/}-->
+                        <!--                            <input type="text" class="input-medium title"
+                                                           placeholder="N&deg; de branchement 1" name="elNumConnections[]">-->
+                        <button type="button" onclick="removeNbreCompteur(this)"
+                                class="btn btn-mini btn-danger removerEl hidden" style="margin-left: 65%;">
+                            <i class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                </div>
+                <button id="addddd" type="button" class="btn btn-mini btn-info mg-top"
+                        onclick="clonerNbreCompteur()" style="margin-left: 20%;">
+                    <i class="glyphicon glyphicon-plus"></i></button>
+            </div>
+
+            <span class="fl-right" style="margin:0px 250px 25px 0px; line-height: 40px;">
+                <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                        flat-border-butt flat-primary-border-butt" >Valider</button>
+            </span>
+            <div style="clear: both" ></div>
+
+        </fieldset>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#uniteAppreciations').children('li').click(function (e) {
+            var content = $(this).children('a').text();
+            if(content==="Compteur"){  
+                $('#nombreCompteur').show(); $('#nbDUnite').hide();
+            }else{ 
+                $('#nbDUnite').show();  $('#nombreCompteur').hide();
+            }
+        });
+    });
+    
+    var j = 1;
+    function clonerNbreCompteur() {
+        j++;
+        var clone = $("#numUniteCompteur").clone();
+        clone.find(".removerEl").removeClass("hidden");
+        var $placeholder = clone.find(".title").attr("placeholder", "N° " + j);
+        $(".numUniteCompteur-parent").append(clone);
+    }
+
+    function removeNbreCompteur(me) {
+        $(me).parent().remove();
+    }
+</script>

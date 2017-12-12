@@ -1,0 +1,121 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title"><span class="hightlight">Tâches confirmées</span> à ce jour</h3>
+<form action="@{archiver()}" method="POST">
+<fieldset>
+    <legend>
+        Archivage des tâches
+        <button id="btnArchiver" type="submit" class="btn btn-default legend-btn flat-butt">
+            <i class="icon-plus icon-white"></i>
+            Archiver Tâche
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+      
+    <table id="tablo" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        <input id="addAll" type="checkbox" onClick="checkAll(this)" value="true">
+                    </th>
+<!--                    <th>ID</th>-->
+                    <th>Branchement</th>
+                    <th>Compteur</th>
+                    <th>Appréciation</th>
+                    <th>Zone/ Quartier</th>
+                    <th>Commentaire</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:pcas, as:'pca'}
+                <tr>
+                    <th>
+                        <input id="addLine" name="idPca[]" type="checkbox" onClick="check(this)" value="${pca.id}">
+                    </th>
+<!--                    <td>${pca.id}</td>-->
+                    <td>${pca.poseCompteur.numeroBranchement}</td>
+                    <td>${pca.poseCompteur.compteur.numeroCompteur}</td>
+                    <td>${pca.appreciation.appreciation}</td>
+                    <td>${pca.poseCompteur.libelleZone}</td>
+                    <td>${pca.commentaire}</td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+</form>
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('#tablo').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+    
+    document.getElementById('btnArchiver').style.visibility = 'hidden';  
+        function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+                 document.getElementById('btnArchiver').style.visibility = 'visible';
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+                 document.getElementById('btnArchiver').style.visibility = 'hidden';
+             }
+         }
+     }
+    }
+ 
+    function check(ele){
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+            document.getElementById('btnArchiver').style.visibility = 'visible';
+     } else {
+            document.getElementById('btnArchiver').style.visibility = 'hidden';
+     }
+    }
+</script>

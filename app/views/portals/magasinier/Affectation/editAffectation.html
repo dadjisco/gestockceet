@@ -1,0 +1,143 @@
+#{extends '/portals/magasinier/Dashboard/index.html' /}
+#{set title:'Révision Stock' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+<div class="panel panel-info">
+    <div class="panel-heading">Choisissez votre unité de mesure</div>
+        <div class="panel-body">
+            <div class="control-group">
+                <div style=" display:inline-table; padding-left: 50px;">
+                    #{if lesunites.size()==0}
+                    Unité non définie ou paramétrée, veuillez juste renseigner le nombre total de compteur
+                    #{/if}
+
+                    #{list items:lesunites, as:'unite'}
+                    <label class="checkbox-inline">
+                        <li>${unite.libelleUnite} (${unite.nbCompteur} Unité(s))</li>
+                    </label>
+                    #{/list}                       
+                </div>
+            </div>
+        </div>
+</div>
+
+<h3 class="bg-gray-title">Modifier  <span class="hightlight">Entrée en</span>  Stock </h3>
+
+<form class="form-horizontal" action="@{saveEditAffectation()}" method="POST">
+    <div class="row-fluid">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                *{#{if error.key != 'user' && error.key != 'address'}*
+                *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+                <li>${error}</li>
+                *{#{/if}}*
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+    </div>
+
+    <div class="row-fluid">
+        <fieldset>
+            <legend>Modification d'une affectation
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+
+            #{field 'sortieEnStock.id'}
+            <input type="text" class="hide form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+            #{/}
+            
+            #{field 'sortieEnStock.dateSortie'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="Date" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}" required="true"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            #{field 'sortieEnStock.beneficiaire'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                        <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                        
+                        <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                            <b class="caret selectbox-caret"></b>
+                        </a> &nbsp;
+                        <span class="error-msg">${field.error}</span>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option">
+                                    <li><a href="#" data-option=""></a>
+                                    #{list items:agences, as:'agence'}
+                                    <li><a href="#" data-option="${agence.id}">${agence.nomAgence}</a></li>
+                                    #{/list}
+                                </ul>
+                            </div>
+                        </div>                       
+                    </div>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'qteTotaleSelect'}
+            <div class="form-group ${field.errorClass} hide">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control ${field.errorClass}" max="${field.value}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}" required="true"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'sortieEnStock.nbCompteur'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control ${field.errorClass}" max="${qteTotaleSelect}"
+                           name="${field.name}" id="${field.id}" value="${qteTotaleSelect}" placeholder="${field.name}" required="true"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            <span class="fl-right" style="margin:25px 250px 25px 0px;line-height: 40px;">
+                <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                        flat-border-butt flat-primary-border-butt" >Valider</button>
+            </span>
+        </fieldset>
+    </div>
+
+
+</form>
+
+
+<script>
+
+    $(document).ready(function () {
+
+    });
+</script>

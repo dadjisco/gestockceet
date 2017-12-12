@@ -1,0 +1,129 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Poser un<span class="hightlight"> compteur</span> </h3>
+<br/>
+<div class="container">
+        #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+</div>
+
+<form class="form-horizontal" action="@{saveNewPose()}" method="POST" enctype="multipart/form-data" style="text-align: center;">                  
+    <div class="row">
+    #{field 'compteur.id'}
+        <input type="text" class="hide form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+    #{/}
+    #{field 'compteur.numeroCompteur'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-3 control-label" for="${field.name}">&{field.name}*:</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control ${field.errorClass}" placeholder="${field.name}"
+                   onfocus="this.blur()" name="${field.name}" id="${field.id}" value="${field.value}" />
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/} 
+    #{field 'numeroBranchement'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-3 control-label" for="${field.name}">&{field.name}*:</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control ${field.errorClass}" placeholder="${field.name}"
+                   name="${field.name}" id="${field.id}" value="${field.value}" />
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/} 
+    #{field 'libelleZone'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-3 control-label" for="${field.name}">&{field.name}*:</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control ${field.errorClass}" placeholder="${field.name}"
+                   name="${field.name}" id="${field.id}" value="${field.value}" />
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/} 
+    #{field 'latitude'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-3 control-label" for="${field.name}">&{field.name}:</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control ${field.errorClass}" placeholder="${field.name}"
+                   name="${field.name}" id="${field.id}" value="${field.value}" />
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}    
+    #{field 'longitude'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-3 control-label" for="${field.name}">&{field.name}:</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control ${field.errorClass}" placeholder="${field.name}"
+                   name="${field.name}" id="${field.id}" value="${field.value}" />
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    #{field 'capturePosePath'}
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="${field.id}"><b>Capture de la pose (*.jpg/*.png):</b></label>
+        <div class="col-sm-4">
+            <input type="file" class="form-control ${field.errorClass}" 
+                   name="${field.name}" id="files" accept="application/pdf/png/jpg" required="true"/>
+        </div>
+    </div>
+    #{/}                   
+    <span class="fl-right" style="margin:0px 250px 25px 0px; line-height: 40px;">
+        <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                flat-border-butt flat-primary-border-butt" >Valider</button>
+    </span>
+</div>
+    </div>
+</form>
+
+
+
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        
+    });
+    
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+
+</script>

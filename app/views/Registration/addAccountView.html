@@ -1,0 +1,205 @@
+<div class="row-fluid">
+    #{field 'companyName'}
+        <div id="blc-designation" class="control-group ${field.errorClass}  offset2 span10
+		      *{#{errorClass 'user_designation'/}}*">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error} *{#{error 'user_designation'/}}*</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+            *{if it's a society}*
+    #{field 'society.societySize'}
+        <div class="control-group ${field.errorClass} offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                #{list items:listSSize, as:'ssize'}
+                    <label class="radio inline">
+                        <input type="radio" class="input-xlarge ${field.errorClass}"
+                               name="${field.name}" *{id="${field.id}"}* value="${flash[field.name]}"/>
+                    ${ssize}
+                    </label>
+                #{/list}
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+
+    *{if it's a society}*
+    #{field 'society.nbrEmployee'}
+        <div class="control-group ${field.errorClass} offset2 span10 ">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+
+    *{if it's a society}*
+    #{field 'society.averageAmountBillByMonth'}
+        <div class="control-group ${field.errorClass} offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+
+    *{if it's a society}*
+    #{field 'society.structureType'}
+        <div id="sType" class="control-group ${field.errorClass}  offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <div class="bfh-selectbox">
+                    <input type="hidden" name="${field.name}" value="${flash[field.name]}">
+                    <a class="bfh-selectbox-toggle input-xlarge" role="button" data-toggle="bfh-selectbox" href="#">
+                        <span class="bfh-selectbox-option" data-option=""> </span>
+                        <b class="caret selectbox-caret"></b>
+                    </a>&nbsp;
+                    <span class="error-msg">${field.error}</span>
+
+                    <div class="bfh-selectbox-options">
+                        <input type="text" class="bfh-selectbox-filter">
+
+                        <div role="listbox">
+                            <ul role="option" class="bank">
+                                #{list items:listStructure, as:'structure'}
+                                    <li><a class="itembank" tabindex="-1" href="#"
+                                           data-option="${structure}">${structure}</a></li>
+                                #{/list}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+
+    #{field 'address.street'}
+        <div class="control-group ${field.errorClass}  offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+    #{field 'address.complement'}
+        <div class="control-group ${field.errorClass}  offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+    #{field 'address.city'}
+        <div class="control-group ${field.errorClass}  offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+    #{field 'address.state'}
+        <div class="control-group ${field.errorClass}  offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+    #{field 'address.postCode'}
+        <div class="control-group ${field.errorClass}  offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+    #{field 'country.ISOCode'}
+        <div class="control-group ${field.errorClass}  offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+            *{<input type="text" class="${field.errorClass}" name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>}*
+                <div id="countries" class="bfh-selectbox bfh-countries control-bfh-selectbox ${field.errorClass}"
+                     data-country="${flash[field.name]}" data-flags="true">
+                    <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                *{<input type="text" class="form-control bfh-phone" data-country="${field.id}">}*
+                    <a class="bfh-selectbox-toggle input-xlarge" role="button" data-toggle="bfh-selectbox" href="#">
+                        <span class="bfh-selectbox-option" data-option=""></span>
+                        <b class="caret selectbox-caret"></b>
+                    </a> &nbsp;
+                    <span class="error-msg">${field.error}</span>
+
+                    <div class="bfh-selectbox-options">
+                        <input type="text" class="bfh-selectbox-filter">
+
+                        <div role="listbox">
+                            <ul role="option">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+    #{field 'address.phone'}
+        <div class="control-group ${field.errorClass}  offset2 span10">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="text" class="input-xlarge ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+    #{/}
+</div>

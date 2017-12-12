@@ -1,0 +1,265 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set title:'Centre de gestion afribills' /}
+
+%{
+listStructure = utils.config.StructureType.values();
+listSSize = utils.config.SocietySize.values();
+SOCIETY = utils.config.AccountType.SOCIETY.getName();
+PARTICULAR = utils.config.AccountType.PARTICULAR.getName();
+ADMIN = utils.config.AccountType.ADMINISTRATOR.getName();
+PARTNER = utils.config.AccountType.PARTNER.getName();
+AGENT = utils.config.AccountType.AGENT.getName();
+}%
+
+<h3 class="bg-gray-title">Modifier <span class="hightlight">Compte</span> </h3>
+
+<form id="editAccount" class="form-horizontal" action="@{saveEditAccount()}" method="POST">
+    <div class="row-fluid">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                #{if error.key != 'user' && error.key != 'address' && error.key != 'country' }
+                <li>${error}</li>
+                #{/if}
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+        #{if flash.success}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Confirmation</strong></p>
+            <p>Vos modifications ont été bien enregistré.</p>
+        </div>
+        #{/if}
+    </div>
+
+    <div class="row-fluid">
+        <fieldset>
+            <legend>
+                Informations compte
+                <button type=button id="cancelEditAccount" class="legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+
+            #{field 'id'}
+            <input type="hidden" name="${field.name}" id="${field.id}" value="${account.id}" />
+            #{/}
+            #{field 'type'}
+            <input type="hidden" name="${field.name}" id="${field.id}" value="${type}" />
+            #{/}
+
+
+
+            #{if (!type.equals(PARTICULAR)) &&
+            (!type.equals(ADMIN))}
+            #{field 'companyName'}
+            <div id="blc-designation" class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}"
+                           name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.companyName}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{/if}
+
+            #{if type.equals(AGENT)}
+            #{field 'categoriePointService'}
+            <div id="blc-designation"  class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">Catégorie du point de service:</label>
+                <div class="controls">
+                    <select class=" input-xlarge" name="nomCategPS" >
+
+                        #{list items:categoriePointServices, as:'categoriePointService'}          
+                        <option value="${categoriePointService.name}" selected="#{if categoriePointService.name.equals(nomCategorie) } true #{/if}">
+                            ${categoriePointService.name}</option>
+                        #{/}
+
+                    </select>
+                </div>
+            </div>
+            #{/}
+            #{/if}
+
+
+            #{if type.equals(SOCIETY)}
+            #{field 'society.structureType'}
+            <div id="sType" class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <div class="bfh-selectbox" data-option="ONG">
+                        <input type="hidden" name="${field.name}" value="${flash[field.name]}">
+                        <a class="bfh-selectbox-toggle input-xlarge" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option="${account.societySize}">${account.societySize}</span>
+                            <b class="caret selectbox-caret"></b>
+                        </a>&nbsp;
+                        <span class="error-msg">${field.error}</span>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option" class="bank">
+                                    #{list items:listStructure, as:'structure'}
+                                    <li><a class="itembank" tabindex="-1" href="#"
+                                           data-option="${structure}">${structure}</a></li>
+                                    #{/list}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'society.societySize'}
+            <div class="control-group ${field.errorClass} ">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    #{list items:listSSize, as:'ssize'}
+                    <label class="radio inline">
+                        <input type="radio" class="input-xlarge ${field.errorClass}"
+                               name="${field.name}" value="${ssize}"
+                               #{if account.societySize == ssize} checked #{/if}/>
+                               ${ssize}
+                    </label>
+                    #{/list}
+                    <span class="error-msg">${field.error}</span>
+
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'society.nbrEmployee'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}"
+                           name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.nbrEmployee}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'society.averageAmountBillByMonth'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}"
+                           name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.averageAmountBillByMonth}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{/if}
+            #{field 'address.street'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.address.street}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.complement'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.address.complement}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.city'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.address.city}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.state'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.address.state}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.postCode'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.address.postCode}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'country.ISOCode'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <div class="bfh-selectbox bfh-countries control-bfh-selectbox ${field.errorClass}"
+                         data-country="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.address.country.ISOCode}#{/else}" data-flags="true">
+                        <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                        <a class="bfh-selectbox-toggle input-xlarge" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option=""></span>
+                            <b class="caret selectbox-caret"></b>
+                        </a>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="control-bfh-selectbox error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'address.phone'}
+            <div class="control-group ${field.errorClass}">
+                <label class="control-label" for="${field.id}">&{field.name}:</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                           value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${account.address.phone}#{/else}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" id="saveAccount" class="flat-butt
+                            flat-primary-butt flat-border-butt flat-primary-border-butt" >Sauvegarder</button>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</form>

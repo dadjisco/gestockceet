@@ -1,0 +1,159 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set title:'Centre de gestion afribills' /}
+#{set 'moreStyles'}
+#{stylesheet '../pwdwidget/pwdwidget.css' /}
+#{/set}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+<form class="form-horizontal" action="@{saveNewProfil()}" method="POST">
+    <div class="row-fluid">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                *{#{if error.key != 'user' && error.key != 'address'}*
+                *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+                <li>${error}</li>
+                *{#{/if}}*
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+        #{if (flash.contains("success")) }
+        <div class="alert alert-success"  >
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            ${flash.get("success")}
+
+        </div>
+        #{/if}
+    </div>
+
+    <div class="row-fluid">
+        <fieldset>
+            <legend>Profil utilisateur
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+
+            #{field 'libProfil'}
+            <div class="form-group ${field.errorClass}  offset2 span10">
+                <label class="col-sm-2 control-label" for="${field.id}">Lib. Profil:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'droit'}
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="${field.id}">Droit:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+            <span class="fl-right" style="margin:0px 300px 25px 0px;line-height: 40px;">
+                <button type="submit" id="signin" class="btn btn-default " >Valider</button>
+            </span>
+            <br>
+            <div class="blc-comptes">
+                <table id="table_droit" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input id="checkAll" type="checkbox"> Tout sélectionner                              
+                            </th>
+                            <th>
+                                Liste des droits
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #{list items:droits, as:'droit'}
+                        <tr>
+                            <td><input name="droitCheck" class="droitCheck" value="${droit.name()}" type="checkbox" /></td>
+                            <td class="droit">${droit.toString()}</td>
+                        </tr>
+                        #{/list}
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</form>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('.blc-comptes table').each(function () {
+            $(this).dataTable({
+                "bRetrieve": true,
+                "oLanguage": {
+                    "sLengthMenu": "Afficher _MENU_ Lignes par page",
+                    "sSearch": "Chercher",
+                    "oPaginate": {
+                        "sNext": "Suivant",
+                        "sPrevious": "Précedent",
+                    },
+                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_ lignes",
+                }
+
+            });
+        });
+
+        $("#myTab a").click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('#filtreByCompte').click(function (e) {
+            $('.blc-comptes').show();
+            $('.blc-users').hide();
+        });
+        $('#filtreByUser').click(function (e) {
+            $('.blc-users').show();
+            $('.blc-comptes').hide();
+        });
+    });
+
+    $("#checkAll").change(function () {
+        var check = $(this).is(":checked");
+        $('.droitCheck').prop("checked", check).trigger('change');
+    });
+
+    $('.droitCheck').change(function () {
+        var check = $(this).is(":checked");
+        var lib_droit = $(this).closest('tr').find('.droit').html() + ";";
+        var droit = $("#droit").val();
+        if (check) {
+            droit = $("#droit").val();
+            $("#droit").val(droit + lib_droit);
+        } else {
+            droit = droit.replace(lib_droit, "");
+            $("#droit").val(droit);
+        }
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().html()))
+            window.location = link;
+    }
+</script>

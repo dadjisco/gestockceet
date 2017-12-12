@@ -1,0 +1,361 @@
+//
+// Buttons
+// --------------------------------------------------
+
+
+// Base styles
+// --------------------------------------------------
+
+// Core
+.btn {
+  display: inline-block;
+  .ie7-inline-block();
+  padding: 4px 12px;
+  margin-bottom: 0; // For input.btn
+  font-size: @baseFontSize;
+  line-height: @baseLineHeight;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  .buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
+  border: 1px solid @btnBorder;
+  *border: 0; // Remove the border to prevent IE7's black border on input:focus
+  border-bottom-color: darken(@btnBorder, 10%);
+  .border-radius(@baseBorderRadius);
+  .ie7-restore-left-whitespace(); // Give IE7 some love
+  .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
+
+  // Hover/focus state
+  &:hover,
+  &:focus {
+    color: @grayDark;
+    text-decoration: none;
+    background-position: 0 -15px;
+
+    // transition is only when going to hover/focus, otherwise the background
+    // behind the gradient (there for IE<=9 fallback) gets mismatched
+    .transition(background-position .1s linear);
+  }
+
+  // Focus state for keyboard and accessibility
+  &:focus {
+    .tab-focus();
+  }
+
+  // Active state
+  &.active,
+  &:active {
+    background-image: none;
+    outline: 0;
+    .box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
+  }
+
+  // Disabled state
+  &.disabled,
+  &[disabled] {
+    cursor: default;
+    background-image: none;
+    .opacity(65);
+    .box-shadow(none);
+  }
+
+}
+
+
+
+// Button Sizes
+// --------------------------------------------------
+
+// Large
+.btn-large {
+  padding: @paddingLarge;
+  font-size: @fontSizeLarge;
+  .border-radius(@borderRadiusLarge);
+}
+.btn-large [class^="icon-"],
+.btn-large [class*=" icon-"] {
+  margin-top: 4px;
+}
+
+// Small
+.btn-small {
+  padding: @paddingSmall;
+  font-size: @fontSizeSmall;
+  .border-radius(@borderRadiusSmall);
+}
+.btn-small [class^="icon-"],
+.btn-small [class*=" icon-"] {
+  margin-top: 0;
+}
+.btn-mini [class^="icon-"],
+.btn-mini [class*=" icon-"] {
+  margin-top: -1px;
+}
+
+// Mini
+.btn-mini {
+  padding: @paddingMini;
+  font-size: @fontSizeMini;
+  .border-radius(@borderRadiusSmall);
+}
+
+
+// Block button
+// -------------------------
+
+.btn-block {
+  display: block;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  .box-sizing(border-box);
+}
+
+// Vertically space out multiple block buttons
+.btn-block + .btn-block {
+  margin-top: 5px;
+}
+
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  &.btn-block {
+    width: 100%;
+  }
+}
+
+
+
+// Alternate buttons
+// --------------------------------------------------
+
+// Provide *some* extra contrast for those who can get it
+.btn-primary.active,
+.btn-warning.active,
+.btn-danger.active,
+.btn-success.active,
+.btn-info.active,
+.btn-inverse.active {
+  color: rgba(255,255,255,.75);
+}
+
+// Set the backgrounds
+// -------------------------
+.btn-primary {
+  .buttonBackground(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
+}
+// Warning appears are orange
+.btn-warning {
+  .buttonBackground(@btnWarningBackground, @btnWarningBackgroundHighlight);
+}
+// Danger and error appear as red
+.btn-danger {
+  .buttonBackground(@btnDangerBackground, @btnDangerBackgroundHighlight);
+}
+// Success appears as green
+.btn-success {
+  .buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
+}
+// Info appears as a neutral blue
+.btn-info {
+  .buttonBackground(@btnInfoBackground, @btnInfoBackgroundHighlight);
+}
+// Inverse appears as dark gray
+.btn-inverse {
+  .buttonBackground(@btnInverseBackground, @btnInverseBackgroundHighlight);
+}
+
+
+// Cross-browser Jank
+// --------------------------------------------------
+
+button.btn,
+input[type="submit"].btn {
+
+  // Firefox 3.6 only I believe
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
+
+  // IE7 has some default padding on button controls
+  *padding-top: 3px;
+  *padding-bottom: 3px;
+
+  &.btn-large {
+    *padding-top: 7px;
+    *padding-bottom: 7px;
+  }
+  &.btn-small {
+    *padding-top: 3px;
+    *padding-bottom: 3px;
+  }
+  &.btn-mini {
+    *padding-top: 1px;
+    *padding-bottom: 1px;
+  }
+}
+
+
+// Link buttons
+// --------------------------------------------------
+
+// Make a button look and behave like a link
+.btn-link,
+.btn-link:active,
+.btn-link[disabled] {
+  background-color: transparent;
+  background-image: none;
+  .box-shadow(none);
+}
+.btn-link {
+  border-color: transparent;
+  cursor: pointer;
+  color: @linkColor;
+  .border-radius(0);
+}
+.btn-link:hover,
+.btn-link:focus {
+  color: @linkColorHover;
+  text-decoration: underline;
+  background-color: transparent;
+}
+.btn-link[disabled]:hover,
+.btn-link[disabled]:focus {
+  color: @grayDark;
+  text-decoration: none;
+}
+
+
+// Flat buttons
+// --------------------------------------------------
+
+// Make a button look flat
+.flat-butt {
+  display: inline-block;
+  margin: 0 5px;
+  border-radius: 0px;
+  font-family: "Lato", sans-serif;
+  font-size: 16.5px;
+  padding: 12px 20px;
+  border: 0;
+  background: #34495E;
+  color: #FFF;
+  cursor: pointer;
+  outline: 0;
+  // Hover/focus state
+  &:hover,
+  &:focus {
+    color: #fff;
+    text-decoration: none;
+//    @include transition(background .1s linear);
+  }
+}
+.flat-butt:hover {
+  background: #005580;
+}
+.flat-primary-butt {
+  background: #006738;//#1abc9c;
+}
+.flat-primary-butt:hover {
+  background:  #177F50;//#2fe2bf;  
+}
+.flat-info-butt {
+  background: #3498db;
+}
+.flat-info-butt:hover {
+  background: #5dade2;
+}
+.flat-danger-butt {
+  background: #e74c3c;
+}
+.flat-danger-butt:hover {
+  background: #ec7063;
+}
+.flat-border-butt {
+  padding: 8px 20px;
+  border: 4px solid #2C3E50;
+}
+.flat-border-butt:hover {
+  border: 4px solid #2C3E50;
+}
+.flat-primary-border-butt {
+  border-color: #16A053;//#16A085;
+}
+.flat-primary-border-butt:hover {
+  border-color: #27AE60;
+}
+.flat-info-border-butt {
+  border-color: #2980B9;
+}
+.flat-info-border-butt:hover {
+  border-color: #2980B9;
+}
+.flat-danger-border-butt {
+  border-color: #C0392B;
+}
+.flat-danger-border-butt:hover {
+  border-color: #C0392B;
+}
+.flat-double-butt {
+  padding: 8px 20px;
+  border: 3px solid #FFF;
+  box-shadow: #34495E 0px 0px 0px 3px;
+}
+.flat-double-butt:hover {
+  box-shadow: #005580 0px 0px 0px 3px;
+}
+.flat-primary-double-butt {
+  box-shadow: #1abc9c 0px 0px 0px 3px;
+}
+.flat-primary-double-butt:hover {
+  box-shadow: #2fe2bf 0px 0px 0px 3px;
+}
+.flat-info-double-butt {
+  box-shadow: #3498db 0px 0px 0px 3px;
+}
+.flat-info-double-butt:hover {
+  box-shadow: #5dade2 0px 0px 0px 3px;
+}
+.flat-danger-double-butt {
+  box-shadow: #e74c3c 0px 0px 0px 3px;
+}
+.flat-danger-double-butt:hover {
+  box-shadow: #ec7063 0px 0px 0px 3px;
+}
+.flat-underline-butt {
+  text-decoration: underline;
+}
+.flat-grad-butt {
+  background-image: linear-gradient(#34495E 50%, #2C3E50 50%);
+}
+.flat-primary-grad-butt {
+  background-image: linear-gradient(#1ABC9C 50%, #16A085 50%);
+}
+.flat-info-grad-butt {
+  background-image: linear-gradient(#3498DB 50%, #2980B9 50%);
+}
+.flat-danger-grad-butt {
+  background-image: linear-gradient(#E74C3C 50%, #C0392B 50%);
+}
+.flat-inner-butt {
+  padding: 11px 0px;
+  box-shadow: inset #2C3E50 -3px -3px 0px;
+}
+.flat-primary-inner-butt {
+  background: #1ABC9C;
+  box-shadow: inset #16A085 -3px -3px 0px;
+}
+.flat-info-inner-butt {
+  box-shadow: inset #2980B9 -3px -3px 0px;
+}
+.flat-danger-inner-butt {
+  box-shadow: inset #C0392B -3px -3px 0px;
+}
+.flat-outer-butt {
+  padding: 11px 0px;
+  box-shadow: #BDC3C7 2px 2px 0px;
+}
+
+

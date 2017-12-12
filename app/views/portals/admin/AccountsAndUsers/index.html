@@ -1,0 +1,107 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set title:'Admin ceetgestock' /}
+
+#{set 'moreStyles'}
+    #{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+    #{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Management des <span class="hightlight">Comptes</span> & <span class="hightlight">Utilisateurs</span> </h3>
+<br>
+<!--<div class="control-group">
+    <div class="controls">
+        <div style=" display:inline-table; padding-left: 50px;">
+            <label class="checkbox-inline">
+                <input id="filtreByCompte" type="radio" style="margin: 0" name="filtreCU" checked/> Comptes
+            </label>
+            <label class="checkbox-inline">
+                <input id="filtreByUser" type="radio" style="margin: 0" name="filtreCU"/> Utilisateurs
+            </label>
+        </div>
+    </div>
+</div>
+
+<br>-->
+
+<ul class="nav nav-tabs" style="border: none;">
+    <li class="active"><a data-toggle="tab" href="#UserSection">Utilisateurs</a></li>
+    <li><a data-toggle="tab" href="#AdministratorSection">Administrateurs</a></li>
+    <li><a data-toggle="tab" href="#MagasinierSection">Magasiniers</a></li>
+    <li><a data-toggle="tab" href="#SoustraitantSection">Sous-traitants</a></li>
+    
+</ul>
+
+<div class="tab-content">
+
+#{if flash.success}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Confirmation</h4>
+        <br/>
+        <p>Opération éffectuée avec succès!!!</p>
+    </div>
+#{/if}
+    <div id="UserSection" class="tab-pane fade">
+    #{include 'portals/admin/AccountsAndUsers/blocViews/blocUser.html'/}
+    </div>
+    <div id="MagasinierSection" class="tab-pane fade">
+    #{include 'portals/admin/AccountsAndUsers/blocViews/blocMagasinier.html'/}
+    </div>
+    <div id="AdministratorSection" class="tab-pane fade">
+    #{include 'portals/admin/AccountsAndUsers/blocViews/blocAdministrator.html'/}
+    </div>
+    <div id="SoustraitantSection" class="tab-pane fade">
+    #{include 'portals/admin/AccountsAndUsers/blocViews/blocSousTraitant.html'/}
+    </div>
+
+</div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+	$(document).ready(function() {
+	    $('.tab-pane table').each(function(){
+			$(this).dataTable({       
+
+                        "oLanguage": {
+                                    "sLengthMenu": "Afficher _MENU_ Lignes par page",
+                                    "sSearch" : "Chercher",
+                                    "oPaginate": {
+                                                        "sNext": "Suivant",
+                                                        "sPrevious":"Précedent",
+                                                },
+                                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_ lignes",
+                                    "sInfoEmpty": "Aucune valeur à Afficher", 
+                                        }
+                    
+                    });
+		});
+
+		 $("#myTab a").click(function(e){
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('#filtreByCompte').click(function(e){
+            $('.blc-comptes').show();
+            $('.blc-users').hide();
+        });
+        $('#filtreByUser').click(function(e){
+            $('.blc-users').show();
+            $('.blc-comptes').hide();
+        });
+	});
+	
+	function confirmDelete(me, link) {
+		if (confirm("Confirmer la supression de : "+$(me).parent().parent().children().first().html()))window.location=link;
+	}
+</script>

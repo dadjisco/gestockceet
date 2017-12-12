@@ -1,0 +1,194 @@
+#{extends 'main.html' /}
+#{set title:'Accueil' /}
+
+%{
+userAccount = user.account.getClass().getSimpleName();
+agence = utils.config.AccountType.AGENCE.getName();
+magasinier = utils.config.AccountType.MAGASINIER.getName();
+soustraitant = utils.config.AccountType.SOUSTRAITANT.getName();
+}%
+<div class="container clearfix">
+    <div class="alert alert-warning alert-dismissable" style="text-align:center">  
+        <a class="close" data-dismiss="alert">x</a>  
+        <strong>Bienvenue sur votre espace de travail.</strong> 
+    </div>
+
+    <div class="tabbable">
+        <ul class="nav nav-pills nav-stacked col-md-3 green-pills no-margin">
+            #{if user.hasAccessTo('TDR')}
+            <li class="#{if action=='tdr'}active#{/if}"><a href="#tabs5-pane1" data-toggle="tab">Tableau de bord</a></li>
+            #{/if}
+            #{if user.hasAccessTo('LISTE_DES_DEMANDES')}
+            <li class="#{if action=='liste_des_demandes'}active#{/if}"><a href="#tabs5-pane14" data-toggle="tab">Liste demandes arrivées</a></li>
+            #{/if}
+            #{if user.hasAccessTo('DEMANDER_COMPTEUR')}
+            <li class="#{if action=='envoyer_demande'}active#{/if}"><a href="#tabs5-pane5" data-toggle="tab">Envoyer une Demande</a></li>
+            #{/if}
+            #{if user.hasAccessTo('ENTREE_STOCK')}
+            <li class="#{if action=='entree_stock'}active#{/if}"><a href="#tabs5-pane4" data-toggle="tab">Entrée en Stock</a></li>
+            #{/if}
+            #{if user.hasAccessTo('SORTIE_STOCK')}
+            <li class="#{if action=='sortie_stock'}active#{/if}"><a href="#tabs5-pane13" data-toggle="tab">Sortie de Stock</a></li>
+            #{/if}
+            #{if user.hasAccessTo('AFFECTER_COMPTEUR')}
+            <li class="#{if action=='affecter_compteur'}active#{/if}"><a href="#tabs5-pane3" data-toggle="tab">Affecter Compteur</a></li>
+            #{/if}
+            #{if user.hasAccessTo('LISTE_COMPTEURS_AFFECTER')}
+            <li class="#{if action=='liste_compteurs_affecter'}active#{/if}"><a href="#tabs5-pane10" data-toggle="tab">Compteurs affectés</a></li>
+            #{/if}
+            #{if user.hasAccessTo('POSER_COMPTEUR')}
+            <li class="#{if action=='poser_compteur'}active#{/if}"><a href="#tabs5-pane6" data-toggle="tab">Poser Compteur</a></li>
+            #{/if}
+            #{if user.hasAccessTo('LISTE_DES_TACHES')}
+            <li class="#{if action=='liste_des_taches'}active#{/if}"><a href="#tabs5-pane11" data-toggle="tab">Liste des Tâches</a></li>
+            #{/if}
+            #{if user.hasAccessTo('CONTROLER_POSE')}
+            <li class="#{if action=='controler_pose'}active#{/if}"><a href="#tabs5-pane7" data-toggle="tab">Notifier Compteur Posé</a></li>
+            #{/if}
+            #{if user.hasAccessTo('AFFECTER_TACHE')}
+            <li class="#{if action=='affecter_tache'}active#{/if}"><a href="#tabs5-pane8" data-toggle="tab">Affecter tâches</a></li>
+            #{/if}
+            #{if user.hasAccessTo('TACHE_CONFIRMEE')}
+            <li class="#{if action=='tache_confirmee'}active#{/if}"><a href="#tabs5-pane15" data-toggle="tab">Tâches Confirmées</a></li>
+            #{/if}
+            #{if user.hasAccessTo('CONTENTIEUX')}
+            <li class="#{if action=='contentieux'}active#{/if}"><a href="#tabs5-pane9" data-toggle="tab">Contentieux</a></li>
+            #{/if}
+            #{if user.hasAccessTo('STATISTIQUES')}
+            <li class="#{if action=='statistiques'}active#{/if}"><a href="#tabs5-pane12" data-toggle="tab">Statistiques</a></li>
+            #{/if}
+        </ul>
+        <div class="tab-content col-md-9">
+            <div id="tabs5-pane1" class="tab-pane #{if action=='tdr'}active#{/if}">
+                #{if action=='tdr'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane4" class="tab-pane #{if action=='entree_stock'}active#{/if}">
+                #{if action=='entree_stock'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane13" class="tab-pane #{if action=='sortie_stock'}active#{/if}">
+                #{if action=='sortie_stock'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane3" class="tab-pane #{if action=='affecter_compteur'}active#{/if}">
+                #{if action=='affecter_compteur'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane5" class="tab-pane #{if action=='envoyer_demande'}active#{/if}">
+                #{if action=='envoyer_demande'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane6" class="tab-pane #{if action=='poser_compteur'}active#{/if}">
+                #{if action=='poser_compteur'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane7" class="tab-pane #{if action=='controler_pose'}active#{/if}">
+                #{if action=='controler_pose'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane8" class="tab-pane #{if action=='affecter_tache'}active#{/if}">
+                #{if action=='affecter_tache'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane9" class="tab-pane #{if action=='contentieux'}active#{/if}">
+                #{if action=='contentieux'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane10" class="tab-pane #{if action=='liste_compteurs_affecter'}active#{/if}">
+                #{if action=='liste_compteurs_affecter'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane11" class="tab-pane #{if action=='liste_des_taches'}active#{/if}">
+                #{if action=='liste_des_taches'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane12" class="tab-pane #{if action=='statistiques'}active#{/if}">
+                #{if action=='statistiques'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane14" class="tab-pane #{if action=='liste_des_demandes'}active#{/if}">
+                #{if action=='liste_des_demandes'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane15" class="tab-pane #{if action=='tache_confirmee'}active#{/if}">
+                #{if action=='tache_confirmee'}
+                #{doLayout /}
+                #{/if}
+            </div>
+        </div>
+    </div> 
+</div>
+
+<script>
+    $('a[href="#tabs5-pane1"]').click(function() {
+        window.location.href = "@{portals.agence.Dashboard.accueil()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane4"]').click(function() {
+        window.location.href = "@{portals.agence.EntreeEnStocksAP.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane13"]').click(function() {
+        window.location.href = "@{portals.agence.SortieAgencePoseur.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane3"]').click(function() {
+        window.location.href = "@{portals.agence.SortieDeStocks.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane5"]').click(function() {
+        window.location.href = "@{portals.agence.EnvoyerDemande.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane6"]').click(function() {
+        window.location.href = "@{portals.agence.PoserCompteurs.effectuerPose()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane7"]').click(function() {
+        window.location.href = "@{portals.agence.Taches.newNotification()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane8"]').click(function() {
+        window.location.href = "@{portals.agence.AffecterTache.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane9"]').click(function() {
+        window.location.href = "@{portals.agence.Contentieux.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane10"]').click(function() {
+        window.location.href = "@{portals.agence.PoserCompteurs.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane11"]').click(function() {
+        window.location.href = "@{portals.agence.Taches.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane12"]').click(function() {
+        window.location.href = "@{portals.agence.Statistiques.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane14"]').click(function() {
+        window.location.href = "@{portals.agence.Demandes.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane15"]').click(function() {
+        window.location.href = "@{portals.agence.AffecterTache.tachesConfirmees()}";
+        e.preventDefault();
+    });
+</script>
+

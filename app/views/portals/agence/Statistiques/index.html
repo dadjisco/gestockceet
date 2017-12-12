@@ -1,0 +1,88 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{stylesheet '../dist/css/AdminLTE.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+    <div>
+        <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-import"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="@{portals.agence.Statistiques.index()}">LES ENTREES</a></span>
+              <span class="info-box-number">${lesEntrees}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="glyphicon glyphicon-export"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="@{portals.agence.Statistiques.index()}">LES SORTIES</a></span>
+              <span class="info-box-number">${lesSorties}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="glyphicon glyphicon-shopping-cart"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="@{portals.agence.Statistiques.index()}">STOCK RESTANT</a></span>
+              <span class="info-box-number">${lesRestes}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+
+<h3 class="bg-gray-title">Les statistiques des <span class="hightlight"> Entrées</span> et <span class="hightlight"> Sorties </span>de Stock </h3>
+
+<ul class="nav nav-tabs" style="border: none;">
+    <li class="active"><a data-toggle="tab" href="#ResteSection">Stock Restant</a></li> 
+    <li><a data-toggle="tab" href="#SortieSection">Les sorties</a></li>
+    <li><a data-toggle="tab" href="#EntreeSection">Les entrées</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="ResteSection" class="tab-pane fade">
+    #{include 'portals/magasinier/StatistiquesEntreesSorties/blocViews/blocRestants.html'/}
+    </div>
+    <div id="SortieSection" class="tab-pane fade">
+    #{include 'portals/magasinier/StatistiquesEntreesSorties/blocViews/blocSorties.html'/}
+    </div>
+    <div id="EntreeSection" class="tab-pane fade">
+    #{include 'portals/magasinier/StatistiquesEntreesSorties/blocViews/blocEntrees.html'/}
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+        $('#tablo1').DataTable();
+        $('#tablo2').DataTable();
+        $('#tablo3').DataTable();
+    });
+</script>

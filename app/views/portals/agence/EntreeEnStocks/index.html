@@ -1,0 +1,123 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Effectuer <span class="hightlight">nouvelle</span> Entrée en Stock </h3>
+<form action="@{newEntreeEnStock()}" method="POST">
+<br>
+<fieldset>
+    <legend>
+        Gestion des entrées
+        <button id="btnEntreeStock" type="submit" class="btn btn-default legend-btn flat-butt">
+            <i class="icon-plus icon-white"></i>
+            Faire nouvelle Entrée
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    <table id="tablo" class="table table-bordered">
+            <thead>
+                <tr>
+<!--                    <th>
+                        <input id="addAll" type="checkbox" onClick="checkAll(this)" value="true">
+                    </th>-->
+                    <th>ID</th>
+                    <th>Date Envoie</th>
+                    <th>Nombre Compteur Envoyé</th>
+                    <th>Quantité Déjà Réglé</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:stockList, as:'sortie'}
+                <tr>
+<!--                    <th>
+                        <input id="addLine" name="idSortie[]" type="checkbox" onClick="check(this)" value="${sortie.id}">
+                    </th>-->
+                    <td>${sortie.id}</td>
+                    <td>${sortie.dateSortie.format('dd MMMM yyyy','fr')}</td>
+                    <td>${sortie.nbCompteur}</td>
+                    <td>${sortie.getQteEntrer(sortie.id)}</td>
+                    <td>
+                        <a class="dataTable-icon" href="@{detailsStockSend(sortie.id)}">
+                            <img src="@{'/public/images/icons/details.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+</div>
+</form>
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('#tablo').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+    
+    document.getElementById('btnEntreeStock').style.visibility = 'hidden';
+    
+        function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+                 document.getElementById('btnEntreeStock').style.visibility = 'visible';
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+                 document.getElementById('btnEntreeStock').style.visibility = 'hidden';
+             }
+         }
+     }
+    }
+ 
+    function check(ele){
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+            document.getElementById('btnEntreeStock').style.visibility = 'visible';
+     } else {
+            document.getElementById('btnEntreeStock').style.visibility = 'hidden';
+     }
+    }
+</script>

@@ -1,0 +1,30 @@
+<form action="@{Registration.newAccount()}" id="newAccountForm" method="post" class="form-horizontal">
+
+    <div class="alert alert-danger">
+        <h4>Très important!!!!!!!</h4>
+        <p>Le numéro mobile que vous allez saisir doit être votre un numéro personnel</p>
+        <p>Il sera nécessaire pour confirmer vos transactions avec le compte afribills</p>
+    </div>
+    <div class="alert alert-error hide">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Erreur!!!</h4>
+        <p>Le numéro mobile que vous avez saisi est indisponsible</p>
+        <p>Veuillez entrer un autre numero de téléphone</p>
+    </div>
+    <div class="control-group hide">
+        <label class="control-label" for="username">Username</label>
+        <div class="controls">
+            <input type="text" name="UserId" id="username" placeholder="Username" value="${user_.username}" >
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="phoneNumber">Numero de telephone (Mobile)</label>
+        <div class="controls">
+            <input type="text" name="phoneNumber" id="phoneNumber" placeholder="Numero de telephone (Mobile)" value="" >
+        </div>
+    </div>
+    <div class="control-group" style="">
+        <button type="submit" id="createAccountAction" class="flat-butt flat-primary-butt flat-border-butt flat-primary-border-butt" >Créer</button>
+    </div>
+
+</form>

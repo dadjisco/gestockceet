@@ -1,0 +1,24 @@
+
+<br/>
+<table id="tablo1" class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Référence Commande</th>
+                <th>Référence Livraison</th>
+                <th>Date d'affectation</th>
+                <th>Nombre Compteur</th>
+            </tr>
+        </thead>
+        <tbody>
+            #{list items:stockEntrees, as:'ste'}
+            <tr>
+                <td>${ste.id}</td>
+                <td>${ste.commande.refCommande}</td>
+                <td>${ste.referenceLivraison}</td>
+                <td>${ste.dateReception.format('dd MMMM yyyy','fr')}</td>
+                <td>${ste.nombreCompteur}</td>
+            </tr>
+            #{/list}
+        </tbody>
+    </table>

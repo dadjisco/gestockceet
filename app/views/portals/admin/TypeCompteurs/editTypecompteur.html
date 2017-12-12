@@ -1,0 +1,63 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set title:'Centre de gestion afribills' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+<h3 class="bg-gray-title">Modification  <span class="hightlight">Type Compteur </span>  <span class="hightlight">CEET</span> </h3>
+<form class="form-horizontal" action="@{saveEditTypeCompteur()}" method="POST">
+    <div class="row-fluid">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                *{#{if error.key != 'user' && error.key != 'address'}*
+                *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+                <li>${error}</li>
+                *{#{/if}}*
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+    </div>
+
+    <div class="row-fluid">
+        <fieldset>
+            <legend>Modification de type compteur
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+
+            #{field 'typeCompteur.id'}
+            <input type="text" class="hide form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+            #{/}
+            #{field 'typeCompteur.libelleCompteur'}
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+      
+            <span class="fl-right" style="margin:25px 250px 25px 0px;line-height: 40px;">
+                <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                        flat-border-butt flat-primary-border-butt" >Valider</button>
+            </span>
+        </fieldset>
+    </div>
+
+
+</form>
+

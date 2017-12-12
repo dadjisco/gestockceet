@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/magasinier/Compteurs.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Demandes/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/models/PoseCompteurAppreciation.java</file>
+            <file>file:/C:/play/new/gestockceet/app/models/TypeCompteur.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Demandes/details.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/StatistiquesEntreesSorties/blocViews/blocRestants.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/soustraitant/PoserCompteurs/effectuerPose.html</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/AffecterTache.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/Contentieux.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Compteurs/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/agence/AffecterTache/tachesConfirmees.html</file>
+            <file>file:/C:/play/new/gestockceet/app/models/PoseCompteur.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/PoserCompteurs.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/admin/Agences.java</file>
+            <file>file:/C:/play/new/gestockceet/app/models/NiveauAppreciation.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/agence/Demandes/details.html</file>
+            <file>file:/C:/play/new/gestockceet/app/models/Demande_TypeCompteur.java</file>
+            <file>file:/C:/play/new/gestockceet/conf/dependencies.yml</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/agence/Demandes/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Compteurs/chargerCompteur.html</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/admin/AccountsAndUsers.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/agence/Dashboard/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Compteurs/newCompteur.html</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/Demandes.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Reception/newReception.html</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/EntreeEnStocksAP.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/EntreeEnStocks.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/magasinier/Dashboard.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/SortieDeStocks.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/admin/Profils/newProfil.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/agence/Taches/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Compteurs/editCompteur.html</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/Dashboard.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/StatistiquesEntreesSorties/blocViews/blocSorties.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Dashboard/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/StatistiquesEntreesSorties/blocViews/blocEntrees.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/agence/EnvoyerDemande/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Commandes/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/soustraitant/PoserCompteurs.java</file>
+            <file>file:/C:/play/new/gestockceet/app/models/EntreeEnStock.java</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/agence/Contentieux/index.html</file>
+            <file>file:/C:/play/new/gestockceet/app/views/portals/magasinier/Affectation/newAffectation.html</file>
+            <file>file:/C:/play/new/gestockceet/app/models/Demande.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/agence/ControlerPose.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/soustraitant/Dashboard.java</file>
+            <file>file:/C:/play/new/gestockceet/app/controllers/portals/magasinier/Affectation.java</file>
+        </group>
+    </open-files>
+</project-private>

@@ -1,0 +1,37 @@
+#{extends 'main.html' /}
+#{set title:'Accueil' /}
+
+<div id="wide-bar" class="clearfix">
+	<div id="wide-bar-fill"></div>
+	<div class="container">
+		<h2 id="wide-bar-brand" >Inscription</h2>	
+	</div>
+</div>
+
+#{if particular!=null}
+<div class="container clearfix">
+	<h3 class="bg-gray-title"><span class="hightlight">Vous aussi</span> profitez de <span class="hightlight">nos services</span> ! </h3>
+	
+	<div class="alert alert-success">
+	  <h4>Confirmation</h4>
+	  <br/>
+	  <p>Votre enregistrement a bien été pris compte.</p>
+	  <p><strong>Veuillez activation votre compte via le lien d'activation envoyé dans votre boîte mail</strong>.</p>
+          <p>Vous n'avez pas reçu mail cliquer <strong><a href="@{Registration.resend(user_.id)}">ici</a></strong> pour renvoyer.</p>
+	</div>
+</div>
+#{/if}
+#{else}
+<div class="container clearfix">
+	<h3 class="bg-gray-title"><span class="hightlight">Vous aussi</span> profitez de <span class="hightlight">nos services</span> ! </h3>
+	
+	<div class="alert alert-success">
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <h4>Confirmation</h4>
+	  <br/>
+	  <p>Votre enregistrement a bien été pris compte.</p>
+	  <p>Un courriel a été envoyé à l'adresse <strong>${flash.useremail}</strong>.</p>
+          
+	</div>
+</div>
+#{/else}

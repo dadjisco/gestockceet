@@ -1,0 +1,39 @@
+# You can specialize this file for each language.
+# For example, for French create a messages.fr file
+#
+
+#Magasin
+Magasin.codeMagasin = Code Magasin
+
+#StockInitial
+referenceCommande = Référence Commande
+dateReception = Date réception
+logistique = Moyen de transport
+description = Description
+nombreCompteur = Nombre de compteur
+nbDUnite = Nombre d'unité
+stockInitial.referenceCommande = Référence Commande
+stockInitial.dateReception = Date réception
+stockInitial.logistique = Moyen de transport
+stockInitial.description = Description
+stockInitial.nombreCompteur = Nombre de compteur
+
+
+#Compteur
+numeroCompteur = N° Compteur
+numeroSerieCompteur = N° Série
+puissance = Puissance
+caracterisques = Caractéristiques
+typeCompteur = Type Compteur
+
+#Type Compteur
+typeCompteur.libelleCompteur = Type Compteur
+
+uniteAppreciation = Unité de mesure
+
+poseCompteur.numeroBranchement = N° Branchement
+poseCompteur.compteur.numeroCompteur = N° Compteur
+poseCompteur.libelleZone = Zone/ Quartier
+poseCompteur.latitude = Latitude
+poseCompteur.longitude = Longitude
+userControleurId = Contrôleur

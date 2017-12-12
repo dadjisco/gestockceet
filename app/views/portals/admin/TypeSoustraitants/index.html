@@ -1,0 +1,121 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Management des<span class="hightlight"> Types Sous-traitants</span> </h3>
+
+<br>
+<fieldset>
+    <legend>
+        Gestion des types sous traitants
+        <button type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href = '@{newTypesoustraitant()}'">
+            <i class="icon-plus icon-white"></i>
+            Ajouter type sous-traitants
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    <div class="blc-comptes">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type Sous-traitant</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:typeSousTraitants, as:'typeSousTraitant'}
+                <tr>
+                    <td>${typeSousTraitant.id}</td>
+                    <td>${typeSousTraitant.libelleTypeSousTraitant}</td>
+                    <td>
+                        <a class="dataTable-icon d_tb_option" href="@{editTypesoustraitant(typeSousTraitant.id)}"><img
+                                src="@{'/public/images/icons/edit.png'}" alt="edit"></a>
+                        <a class="dataTable-icon d_tb_option" href="javascript:;"
+                           onclick="confirmDelete(this, '@{deleteTypesoustraitant(typeSousTraitant.id)}')"><img
+                                src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('.tab-pane table').each(function () {
+            $(this).dataTable({
+                "oLanguage": {
+                    "sLengthMenu": "Afficher _MENU_ Lignes par page",
+                    "sSearch": "Chercher",
+                    "oPaginate": {
+                        "sNext": "Suivant",
+                        "sPrevious": "Précedent"
+                    },
+                    "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_ lignes",
+                    "sInfoEmpty": "Aucune valeur à Afficher"
+                }
+
+            });
+        });
+
+        $("#myTab a").click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('#filtreByCompte').click(function (e) {
+            $('.blc-comptes').show();
+            $('.blc-users').hide();
+        });
+        $('#filtreByUser').click(function (e) {
+            $('.blc-users').show();
+            $('.blc-comptes').hide();
+        });
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+</script>

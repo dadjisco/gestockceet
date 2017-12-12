@@ -1,0 +1,143 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Affectation de <span class="hightlight"> compteurs</span> </h3>
+<form action="@{saveNewSortieDeStock()}" method="POST">
+
+<br>
+<fieldset>
+    <legend>
+        Gestion des sorties
+        <button id="btnAffectation" type="submit" class="btn btn-default legend-btn flat-butt">
+            <i class="icon-plus icon-white"></i>
+            Faire nouvelle Sortie
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    <div class="blc-comptes">
+        <table id="example" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        <input id="addAll" type="checkbox" onClick="checkAll(this)" value="true">
+                    </th>
+<!--                    <th>ID</th>-->
+                    <th>numeroCompteur</th>
+                    <th>puissance</th>
+                    <th>typeCompteur</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:compteurs, as:'compteur'}
+                <tr>
+                    <th>
+                        <input id="addLine" name="idCompteur[]" type="checkbox" onClick="check(this)" value="${compteur.id}">
+                    </th>
+<!--                    <td>${compteur.id}</td>-->
+                    <td>${compteur.numeroCompteur}</td>
+                    <td>${compteur.puissance}</td>
+                    <td>${compteur.typeCompteur.libelleCompteur}</td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+    <div id="selAgence">
+        #{field 'agence.nomAgence'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+            <div class="col-sm-4">
+                <input name="agenceSelect" value="${agence.id}" style="display: none;"/>
+                <input type="text" class="form-control ${field.errorClass}" disabled="disabled"
+                       name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}" required="true"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+        #{field 'dateAffectation'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+            <div class="col-sm-4">
+                <input type="Date" class="form-control ${field.errorClass}"
+                       name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}" required="true"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+    </div>
+        <br/>
+</div>
+</form>
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        
+    });
+    
+    document.getElementById('btnAffectation').style.visibility = 'hidden';
+    function checkAll(ele) {
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+         for (var i = 0; i < checkboxes.length; i++) {
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = true;
+                 document.getElementById('btnAffectation').style.visibility = 'visible';
+             }
+         }
+     } else {
+         for (var i = 0; i < checkboxes.length; i++) {
+             console.log(i)
+             if (checkboxes[i].type == 'checkbox') {
+                 checkboxes[i].checked = false;
+                 document.getElementById('btnAffectation').style.visibility = 'hidden';
+             }
+         }
+     }
+    }
+ 
+    function check(ele){
+     var checkboxes = document.getElementsByTagName('input');
+     if (ele.checked) {
+            document.getElementById('btnAffectation').style.visibility = 'visible';
+     } else {
+            document.getElementById('btnAffectation').style.visibility = 'hidden';
+     }
+    } 
+
+</script>

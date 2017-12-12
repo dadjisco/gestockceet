@@ -1,0 +1,96 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{stylesheet '../bootstrap-3.3.7/css/bootstrap.min.css' /}
+#{stylesheet '../dist/css/AdminLTE.min.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+    <div>
+        <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-import"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="@{portals.agence.Statistiques.index()}">LES ENTREES</a></span>
+              <span class="info-box-number">${lesEntrees}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="glyphicon glyphicon-export"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="@{portals.agence.Statistiques.index()}">LES SORTIES</a></span>
+              <span class="info-box-number">${lesSorties}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="glyphicon glyphicon-shopping-cart"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="@{portals.agence.Statistiques.index()}">STOCK RESTANT</a></span>
+              <span class="info-box-number">${lesRestes}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+
+<h3 class="bg-gray-title">Bienvenu sur <span class="hightlight">la plate-forme de </span>GeStock CEET</h3>
+<form role="search" name="searchform" method="POST">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" placeholder="recherche" name="recherch" class="form-control left-rounded">
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-inverse right-rounded">Chercher</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        #{list items:agences, as:'agence'}
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon"><i class="glyphicon glyphicon-folder-open"></i></span>
+            <div class="info-box-content" style="text-align: center;"><br/>
+                <span class="info-box-text"><a href="@{portals.agence.SortieDeStocks.index(agence.id)}">${agence.nomAgence}</a></span>
+                <span class="info-box-number">${agence.getNombreCompteur(agence.id)}</span>
+            </div>
+          </div>
+        </div>    
+        #{/list}
+    </div>
+    
+</form>
+
+
+ 

@@ -1,0 +1,85 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Demandes<span class="hightlight"> compteur</span> </h3>
+
+<div class="tab-content">
+        #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    
+        <table id="example" class="table table-bordered">
+            <thead>
+                <tr>
+<!--                    <th>ID</th>-->
+                    <th>Expéditeur</th>
+                    <th>Date Demande</th>
+                    <th>Quantité Demandé</th>
+<!--                    <th>Satisfait</th>
+                    <th>Traité</th>-->
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:demandes, as:'demande'}
+                <tr>
+<!--                    <td>${demande.id}</td>-->
+                    <td>${demande.user.account.nomAgence}</td>
+                    <td>${demande.dateEnvoie.format('dd MMMM yyyy','fr')}</td>
+                    <td>${demande.getQteCptDemander(demande.id)}</td>
+<!--                    <td>${demande.satisfait}</td>
+                    <td>
+                        #{if demande.nivoTraitement==0} NON #{/if}
+                        #{if demande.nivoTraitement==1} PARTIEL #{/if}
+                        #{if demande.nivoTraitement==2} OUI #{/if}
+                    </td>-->
+                    <td>
+                        <a class="dataTable-icon" href="@{details(demande.id)}">
+                            <img src="@{'/public/images/icons/details.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+    </div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+    
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+
+</script>

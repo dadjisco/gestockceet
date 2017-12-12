@@ -1,0 +1,96 @@
+#{extends 'main.html' /}
+#{set title:'Accueil' /}
+
+<div class="container clearfix">
+    <div class="alert alert-warning alert-dismissable" style="text-align:center">  
+        <a class="close" data-dismiss="alert">x</a>  
+        <strong>Bienvenue sur l'espace d'aministration.</strong> Depuis cette interface, 
+        administrez le système dans son ensemble. 
+    </div> 
+
+    <div class="tabbable">
+        <ul class="nav nav-pills nav-stacked col-md-3 green-pills no-margin">
+            <li class="#{if action=='acc_user'}active#{/if}"><a href="#tabs5-pane1" data-toggle="tab">Comptes & Utilisateurs</a></li>
+            <li class="#{if action=='profil'}active#{/if}"><a href="#tabs5-pane2" data-toggle="tab">Profil utilisateurs</a></li>
+            <li class="#{if action=='agence'}active#{/if}"><a href="#tabs5-pane3" data-toggle="tab">Agence CEET</a></li>
+            <li class="#{if action=='magasin'}active#{/if}"><a href="#tabs5-pane4" data-toggle="tab">Magasin</a></li>
+            <li class="#{if action=='type_soustraitant'}active#{/if}"><a href="#tabs5-pane5" data-toggle="tab">Type Sous Traitant</a></li>
+            <li class="#{if action=='type_controleur'}active#{/if}"><a href="#tabs5-pane6" data-toggle="tab">Type Contrôleur</a></li>
+            <li class="#{if action=='type_compteur'}active#{/if}"><a href="#tabs5-pane7" data-toggle="tab">Type Compteur</a></li>
+        </ul>
+        <div class="tab-content col-md-9">
+            #{if action=='infos'}
+            #{doLayout /}
+            #{/if}
+            <div id="tabs5-pane1" class="tab-pane #{if action=='acc_user'}active#{/if}">
+                #{if action=='acc_user'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane2" class="tab-pane #{if action=='profil'}active#{/if}">
+                #{if action=='profil'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane3" class="tab-pane #{if action=='agence'}active#{/if}">
+                #{if action=='agence'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane4" class="tab-pane #{if action=='magasin'}active#{/if}">
+                #{if action=='magasin'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane5" class="tab-pane #{if action=='type_soustraitant'}active#{/if}">
+                #{if action=='type_soustraitant'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane6" class="tab-pane #{if action=='type_controleur'}active#{/if}">
+                #{if action=='type_controleur'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane7" class="tab-pane #{if action=='type_compteur'}active#{/if}">
+                #{if action=='type_compteur'}
+                #{doLayout /}
+                #{/if}
+            </div>
+        </div>
+    </div> 
+</div>
+
+<script>
+    $('a[href="#tabs5-pane1"]').click(function() {
+        window.location.href = "@{portals.admin.AccountsAndUsers.index()}";
+        e.preventDefault();
+    });
+        
+    $('a[href="#tabs5-pane2"]').click(function() {
+        window.location.href = "@{portals.admin.Profils.index()}";
+        e.preventDefault();
+    });
+        
+    $('a[href="#tabs5-pane3"]').click(function() {
+        window.location.href = "@{portals.admin.Agences.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane4"]').click(function() {
+        window.location.href = "@{portals.admin.Magasins.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane5"]').click(function() {
+        window.location.href = "@{portals.admin.TypeSoustraitants.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane6"]').click(function() {
+        window.location.href = "@{portals.admin.TypeControleurs.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane7"]').click(function() {
+        window.location.href = "@{portals.admin.TypeCompteurs.index()}";
+        e.preventDefault();
+    });
+</script>
+

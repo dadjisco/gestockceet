@@ -1,0 +1,39 @@
+#{extends 'main.html' /}
+#{set title:'Accueil' /}
+
+<div id="wide-bar" class="clearfix">
+    <div id="wide-bar-fill"></div>
+    <div class="container">
+        <h2 id="wide-bar-brand" >Activation de compte</h2>	
+    </div>
+</div>
+
+
+<div class="container clearfix">
+    <h3 class="bg-gray-title"><span class="hightlight"> Activer votre inscription</span> par le code de confirmation <span class="hightlight"> reçu par sms </span> ! </h3>
+
+    <form class="form-horizontal" action="@{Registration.doActivationAccount()}" method="POST">
+        <div class="row-fluid">
+            <fieldset>
+                <legend>Confirmation</legend>
+                #{field 'codeActivation'}
+                <div class="control-group ${field.errorClass}  offset2 span10">
+                    <label class="control-label" for="${field.id}">Code d'activation:</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge ${field.errorClass}"
+                               name="${field.name}" id="${field.id}" value="${flash[field.name]}"/>
+                        <span class="error-msg">${field.error}</span>
+                        <p class="help-block">Supporting help text</p>
+                    </div>
+                </div>
+                #{/}
+                <div class="control-group offset2 span10">
+                    <div class="controls">
+                        <button type="submit" id="signin" class="flat-butt flat-primary-butt
+                                flat-border-butt flat-primary-border-butt" >Activer</button>
+                    </div>
+                </div>
+        </div>
+
+    </form>
+</div>

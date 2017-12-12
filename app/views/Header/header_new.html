@@ -1,0 +1,174 @@
+<header id="header-main">
+
+    <div id="top-bar" class="row-fluid">
+        <div class="span12">
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="span3">
+                        <div class="pull-left bfh-selectbox bfh-languages" data-language="fr_FR" data-available="en_US,fr_FR"
+                             data-flags="true">
+                            <input type="hidden" value="">
+                            <a class="bfh-selectbox-toggle" role="button" data-toggle="bfh-selectbox" href="#">
+                                <span class="bfh-selectbox-option bfh-selectbox-small" data-option=""></span>
+                                <b class="caret"></b>
+                            </a>
+
+                            <div class="bfh-selectbox-options">
+                                <div role="listbox">
+                                    <ul role="option">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="span9">
+                        #{if user == null}
+                        <a class="flat-link top-link no-margin no-padding-rl" href="#modalConnexion" role="button" class="btn-link"
+                           data-toggle="modal">Connexion</a>
+                        <a class="flat-link" href="@{Registration.register()}">Inscription gratuite</a>
+                        #{/if}
+                        #{else}
+                        <a class="flat-link no-margin no-padding-rl" href="@{Secure.logout()}">Déconnexion</a>
+                        #{/else}
+                        %{
+                        portalAdmin = (request.url.contains("Admin") || ( (user != null) &&
+                        user.account.getClass().getSimpleName().equals("Administrator"))) ? "active" : "";
+
+                        portalParticular = (request.url.contains("particular") || ( (user != null) &&
+                        user.account.getClass().getSimpleName().equals("Particular"))) ? "active" : "";
+                        portalPartner = (request.url.contains("partner") || ( (user != null) &&
+                        user.account.getClass().getSimpleName().equals("Partner"))) ? "active" : "";
+                        portalSociety = (request.url.contains("societe") || ( (user != null) &&
+                        user.account.getClass().getSimpleName().equals("Society"))) ? "active" : "";
+                        portalAgent = (request.url.contains("agent") || ( (user != null) &&
+                        user.account.getClass().getSimpleName().equals("Agent"))) ? "active" : "";
+                        portalBank = (request.url.contains("bank") || ( (user != null) &&
+                        user.account.getClass().getSimpleName().equals("Bank"))) ? "active" : "";
+                        }%
+                        #{if portalParticular.equals("active")}
+                        <a class="flat-link top-link ${portalParticular}" href="@{portals.particular.Dashboard.index()}">                             <strong>
+                                ${user.username} | ${user.account.companyName!=null?user.account.companyName.toUpperCase():""} &nbsp; |
+                            </strong>
+                            Particulier</a>
+                        #{/if}
+                        #{if portalAgent.equals("active")}
+                        <a class="flat-link top-link ${portalAgent}" href="@{portals.agent.Dashboard.index()}">
+                            <strong>
+                                ${user.username} | ${user.account.companyName!=null?user.account.companyName.toUpperCase():""} &nbsp;
+                            </strong>
+                        </a>
+                        #{/if}
+                        #{if portalPartner.equals("active")}
+                        <a class="flat-link top-link ${portalPartner}" href="@{portals.partner.Dashboard.index()}">
+                            <strong>
+                                ${user.username} | ${user.account.companyName!=null?user.account.companyName.toUpperCase():""} &nbsp; |
+                            </strong>
+                            Partenaire</a>
+                        #{/if}
+                        #{if portalSociety.equals("active")}
+                        <a class="flat-link top-link ${portalSociety}" href="@{portals.society.Dashboard.app()}">
+                            <strong>
+                                ${user.username} | ${user.account.companyName!=null?user.account.companyName.toUpperCase():""} &nbsp; |
+                            </strong>
+                            Société</a>
+                        #{/if}
+                        #{if portalBank.equals("active")}
+                        <a class="flat-link top-link ${portalBank}" href="@{portals.bank.Dashboard.app()}">
+                            <strong>
+                                ${user.username} | ${user.account.companyName!=null?user.account.companyName.toUpperCase():""} &nbsp; |
+                            </strong>
+                            Bank
+                        </a>
+                        #{/if}
+                        #{if portalAdmin.equals("active")}
+
+                        #{if user.moderateurs==null || user.moderateurs.isEmpty()}
+                        <a class="flat-link top-link ${portalBank}" href="@{portals.admin.Accountsandusers.index()}">
+                            <strong>
+                                ${user.username} ${user.account.companyName!=null?" | "+user.account.companyName.toUpperCase():""} &nbsp; |
+                            </strong>
+                            Administrateur
+                        </a>
+                        #{/if}
+                        #{else}
+                        <a class="flat-link top-link ${portalBank}" href="@{portals.moderateur.Alertes.index()}">
+                            <strong>
+                                ${user.username} ${user.account.companyName!=null?" | "+user.account.companyName.toUpperCase():""} &nbsp; |
+                            </strong>
+                            Modérateur
+                        </a>
+                        #{/else}
+                        #{/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu-wraper">	
+        <div class="container absolute-center">
+            <div id="menu" class=" navbar">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="brand" href="@{Application.index()}"><img src="@{'/public/images/logos/logo-afribills-web.png'}" alt="logo"></a>
+                        <div class="clearfix nav-collapse-container">
+                            <!-- Everything you want hidden at 940px or less, place within here -->
+                            <div class="nav-collapse collapse">
+                                <ul class="nav"  style="margin-left: 10%">
+                                    %{ home = (!request.url.contains("services")
+                                    && !request.url.contains("faq")
+                                    && !request.url.contains("contact")
+                                    && !request.url.contains("operation")
+                                    && !request.url.contains("ads")
+                                    && !request.url.contains("privateaccount")
+                                    && !request.url.contains("login")) ? "class='active'" : ""; }%
+                                    <li ${home}><a href="@{Application.index()}">Accueil</a></li>
+                                    %{ services = (request.url.contains("services")) ? "class='active'" : ""; }%
+                                    <li ${services}><a href="@{Application.services()}">Services</a></li>
+                                    %{ faq = (request.url.contains("faq")) ? "class='active'" : ""; }%
+                                    <li ${faq} ><a href="@{Application.faq()}">Aide</a></li>
+                                    %{ contact = (request.url.contains("contact")) ? "class='active'" : ""; }%
+                                    <li ${contact} ><a href="@{Application.contact()}">Contact</a></li>
+                                </ul>								
+
+                                <!-- <a class="pull-right" href="http://www.ceet.tg/" target="_blank"><img src="@{'/public/images/pages/ceet_logo.jpg'}" alt="logo" style="height: 50px;"></a>-->
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>	
+        </div>	
+    </div>		
+
+<div id="modalConnexion" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close yellow" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>CONNEXION</h3>
+    </div>
+    <div class="modal-body">
+        #{include '/Application/loginForm.html' /}	    
+    </div>
+
+    <div class="modal-footer">
+        Pas encore de compte?
+        <a href="#" class="btn btn-primary">S'enregistrer</a>
+    </div>
+
+</div>
+</header>
+
+<script>
+    $(document).ready(function () {
+        $('.carousel').carousel({
+            interval: 3500
+        })
+    })
+</script>

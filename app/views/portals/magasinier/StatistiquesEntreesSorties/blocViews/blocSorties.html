@@ -1,0 +1,21 @@
+<br/>
+    <table id="tablo3" class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date d'affectation</th>
+                <th>Nombre Compteur</th>
+                <th>Bénéficiaire</th>
+            </tr>
+        </thead>
+        <tbody>
+            #{list items:stockSorties, as:'sts'}
+            <tr>
+                <td>${sts.id}</td>
+                <td>${sts.dateSortie.format('dd MMMM yyyy','fr')}</td>
+                <td>${sts.nbCompteur}</td>
+                <td>${sts.beneficiaire.nomAgence}</td>
+            </tr>
+            #{/list}
+        </tbody>
+    </table>

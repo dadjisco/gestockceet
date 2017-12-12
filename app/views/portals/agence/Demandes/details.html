@@ -1,0 +1,157 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Détails <span class="hightlight">Demande </span></h3>
+<form class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
+
+    <div class="tab-content">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                <li>${error}</li>
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+
+        #{if (flash.contains("success")) }
+        <div class="alert alert-success"  >
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            ${flash.get("success")}
+
+        </div>
+        #{/if}
+
+        <div class="row">
+            #{ifErrors}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <p><strong>Error(s)</strong> found!</p>
+                <ul>
+                    #{errors}
+                    *{#{if error.key != 'user' && error.key != 'address'}*
+                    *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+                    <li>${error}</li>
+                    *{#{/if}}*
+                    #{/errors}
+                </ul>
+            </div>
+            #{/ifErrors}
+            #{if (flash.contains("success")) }
+            <div class="alert alert-success"  >
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                ${flash.get("success")}
+
+            </div>
+            #{/if}
+        </div>
+        
+        <fieldset>
+            <legend>Details demande par type de compteur
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+                <button type="button" class="btn btn-default legend-btn flat-butt flat-danger-butt btn-sm" onClick="window.location.href = '@{portals.agence.Demandes.getFile(demandeInitial.id)}'">
+                    <span class="glyphicon glyphicon-download-alt"></span> Pièce Jointe
+                </button>
+            </legend>
+</fieldset>
+        #{field 'refDemande'}
+            <input type="text" class="hide form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+        #{/}
+
+    #{list items:demandes, as:'demande'}
+        #{field 'demande.typeCompteur'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-4 control-label" >&{field.name}:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control ${field.errorClass}" disabled="true"
+                       name="${field.name}" value="${demande.typeCompteur.libelleCompteur}" placeholder="${field.name}"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+        #{field 'demande.QteCompteur'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-4 control-label" >&{field.name}:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control ${field.errorClass}" disabled="true"
+                       name="${field.name}" value="${demande.QteCompteur}" placeholder="${field.name}"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+    #{/list}
+        #{field 'QteTotale'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-4 control-label" for="${field.id}">&{field.name}:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control ${field.errorClass}" disabled="true"
+                       name="${field.name}" id="${field.id}" value="${cumul}" placeholder="${field.name}"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+    </div>
+</form> 
+
+<br/>
+
+<script>
+
+    $(document).ready(function () {
+     $('#example').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+
+    function checkAll(ele) {
+        var checkboxes = document.getElementsByTagName('input');
+        var cptSelect=-1;    // Pour compter le nombre de ligne sélectioné
+        if (ele.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = true;
+                    cptSelect+=1;
+                }
+            }
+        } else {
+            for (var i = 0; i < checkboxes.length; i++) {
+                console.log(i)
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = false;  
+                }
+            }
+            cptSelect=0;
+        }
+        document.getElementById('nbreConfirmer').value = cptSelect;
+    }
+
+    function check(ele) {
+        var checkboxes = document.getElementsByTagName('input');
+        if (ele.checked) {
+            document.getElementById('nbreConfirmer').value++;
+            document.getElementById('btnEntreeStock').style.visibility = 'visible';
+        } else {
+            document.getElementById('nbreConfirmer').value--;
+            document.getElementById('btnEntreeStock').style.visibility = 'hidden';
+        }
+    }
+</script>

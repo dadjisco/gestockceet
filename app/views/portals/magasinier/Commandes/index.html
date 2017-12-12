@@ -1,0 +1,82 @@
+#{extends '/portals/magasinier/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Commandes en <span class="hightlight">attente de livraison</span> </h3>
+
+<br>
+<fieldset>
+    <legend>
+        Enregistrement des commandes
+        <button type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href = '@{newCommande()}'">
+            <i class="icon-plus icon-white"></i>
+            Nouvelle Commande
+        </button>
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    
+    <table id="tablo" class="table table-bordered">
+            <thead>
+                <tr>
+<!--                    <th>ID</th>-->
+                    <th>Référence Commande</th>
+                    <th>Date Commande</th>
+                    <th>Description</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:commandes, as:'commande'}
+                <tr>
+<!--                    <td>${commande.id}</td>-->
+                    <td>${commande.refCommande}</td>
+                    <td>${commande.dateCommande}</td>
+                    <td>${commande.description}</td>
+                    <td>
+                        <a class="dataTable-icon d_tb_option" href="javascript:;"
+                           onclick="confirmDelete(this, '@{deleteCommande(commande.id)}')"><img
+                                src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#tablo').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+</script>

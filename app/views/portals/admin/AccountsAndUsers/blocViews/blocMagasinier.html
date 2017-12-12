@@ -1,0 +1,91 @@
+%{
+MAGASINIER = utils.config.AccountType.MAGASINIER;
+}%
+<fieldset>
+    <legend>
+        Gestion des Magasiniers
+    </legend>
+        <button type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href='@{newAccount(MAGASINIER)}'">
+            <i class="icon-plus icon-white"></i>
+            Ajouter Magasinier
+        </button>
+</fieldset>
+
+<div class="blc-comptes table-responsive">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom du Compte</th>
+            <th>Caution</th>
+            <th>Nbre utilisateurs</th>
+            <th>Statut</th>
+            <th class="span2">Options</th>
+        </tr>
+        </thead>
+        <tbody>
+        #{list items:agents, as:'agent'}
+        <tr>
+            <td>${agent.id}</td>
+            <td>${agent.companyName}</td>
+            <td>Caution</td>
+            <td>${agent.users.size()}</td>
+            <td>Actif</td>
+            <td>
+                <a class="dataTable-icon d_tb_option" href="@{editAccount(agent.id, AGENT)}"><img
+                        src="@{'/public/images/icons/edit.png'}" alt="edit"></a>
+                <a class="dataTable-icon d_tb_option" href="javascript:;"
+                   onclick="confirmDelete(this, '@{deleteAccount(agent.id)}')"><img
+                        src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                <a class="dataTable-icon" href="@{addUser(agent.id)}">
+                    <img src="@{'/public/images/icons/user_add.png'}" alt="edit"></a>
+                <a class="dataTable-icon" href="@{detailsAccount(agent.id)}">
+                    <img src="@{'/public/images/icons/details.png'}" alt="edit"></a>
+            </td>
+        </tr>
+        #{/list}
+        </tbody>
+    </table>
+</div>
+
+*{liste users des agents}*
+<div class="hide blc-users">
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom(s)</th>
+            <th>Email</th>
+            <th>Login</th>
+            <th>Profil</th>
+            <th>Statut</th>
+            <th class="span2">Options</th>
+        </tr>
+        </thead>
+        <tbody>
+        #{list items:agents, as:'agent'}
+            #{list items:agent.users, as:'userAg'}
+            <tr>
+                <td>${userAg.firstname}</td>
+                <td>${userAg.lastname}</td>
+                <td> ${userAg.email}</td>
+                <td>${userAg.username}</td>
+                <td>${userAg.profil!=null?userAg.profil.libProfil:''}</td>
+                <td>Actif</td>
+                <td>
+                    *{<a class="dataTable-icon" href="" onclick="alert('gestion des permissions en cours d\'implémentation')">}*
+                        *{<img src="@{'/public/images/icons/acl.png'}" alt="edit"></a>}*
+                    <a class="dataTable-icon" href="@{portals.admin.AccountsAndUsers.editUser(userAg.id)}">
+                        <img src="@{'/public/images/icons/user_edit.png'}" alt="edit"></a>
+                    <a class="dataTable-icon" href="#"  onclick="confirmDelete('@{portals.admin.AccountsAndUsers.deleteUser(userAg.id)}')">
+                        <img src="@{'/public/images/icons/user_delete.png'}" alt="delete"></a>
+                    <a class="dataTable-icon" href="#">
+                        <img src="@{'/public/images/icons/user_go.png'}" alt="se connecter"></a>
+                </td>
+            </tr>
+            #{/list}
+        #{/list}
+        </tbody>
+    </table>
+</div>

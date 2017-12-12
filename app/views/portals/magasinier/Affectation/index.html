@@ -1,0 +1,148 @@
+#{extends '/portals/magasinier/Dashboard/index.html' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{stylesheet '../dist/css/AdminLTE.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+    <div>
+        <div class="row">
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="glyphicon glyphicon-export"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="#">LES SORTIES</a></span>
+              <span class="info-box-number">${stockSortie}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-import"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="#">LES ENTREES</a></span>
+              <span class="info-box-number">${stockEntree}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="glyphicon glyphicon-shopping-cart"></i></span>
+
+            <div class="info-box-content" style="text-align: center;">
+                <br/>
+                <span class="info-box-text"><a href="#">STOCK RESTANT</a></span>
+              <span class="info-box-number">${stockRestant}</span> Compteur(s)
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+<br/>
+
+<h3 class="bg-gray-title">Les différentes <span class="hightlight">Sorties </span> effectuées </h3>
+
+<fieldset>
+    <legend>
+        Sorties en stock
+<!--        <button id="btnEntree" type=button class="btn btn-default legend-btn flat-butt"
+                onclick="window.location.href = '@{newAffectation()}'">
+            <i class="icon-plus icon-white"></i>
+            Sortie de Stock
+        </button>-->
+    </legend>
+</fieldset>
+
+<div class="tab-content">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+    
+
+        <table id="tablo" class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+<!--                    <th>ID</th>-->
+                    <th>Date d'affectation</th>
+                    <th>Nombre Compteur</th>
+                    <th>Bénéficiaire</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:sortieEnStocks, as:'sortie'}
+                <tr>
+<!--                    <td>${sortie.id}</td>-->
+                    <td>${sortie.dateSortie.format('dd MMMM yyyy','fr')}</td>
+                    <td>${sortie.nbCompteur}</td>
+                    <td>${sortie.beneficiaire.nomAgence}</td>
+                    <td>
+                        <a class="dataTable-icon d_tb_option" href="@{editAffectation(sortie.id)}"><img
+                                src="@{'/public/images/icons/edit.png'}" alt="edit"></a>
+                        <a class="dataTable-icon d_tb_option" href="javascript:;"
+                           onclick="confirmDelete(this, '@{deleteAffectation(sortie.id)}')"><img
+                                src="@{'/public/images/icons/remove.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+
+</div>
+
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('#tablo').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+    
+</script>

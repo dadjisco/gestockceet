@@ -1,0 +1,37 @@
+#{form @secure.authenticate(), class:"form-horizontal"}
+    #{if flash.error}
+        <p class="error">
+            &{flash.error}
+        </p>
+    #{/if}
+    #{if flash.success}
+        <p class="success">
+            &{flash.success}
+        </p>
+    #{/if}
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="username">Utilisateur</label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" name="username" id="username" placeholder="Nom d'utilisateur" value="${flash.username}" >
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="password">&{'secure.password'}</label>
+    <div class="col-sm-4">
+        <input type="password" class="form-control" name="password" id="password" placeholder="&{'secure.password'}" value="">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <label>
+        <input type="checkbox" name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} />
+        <label for="remember">&{'secure.remember'}</label>
+      </label>
+    </div>
+  </div>
+  <div style="margin-left: 175px;">
+    <button type="submit" id="signin" class="btn btn-default flat-butt" >&{'secure.signin'}</button>
+    <a href="#">Mot de passe oublié ?</a>
+  </div>
+#{/form}

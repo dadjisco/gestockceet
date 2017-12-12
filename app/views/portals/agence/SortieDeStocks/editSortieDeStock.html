@@ -1,0 +1,154 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+<h3 class="bg-gray-title">Modification  <span class="hightlight">Sortie de Stock</span> </h3>
+<form class="form-horizontal" action="@{saveEditSortieDeStock()}" method="POST">
+    <div class="row-fluid">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                *{#{if error.key != 'user' && error.key != 'address'}*
+                *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+                <li>${error}</li>
+                *{#{/if}}*
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+    </div>
+
+    <div class="row-fluid">
+        <fieldset>
+            <legend>Modification d'une sortie de Stock
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+
+            #{field 'compteur.id'}
+            <input type="text" class="hide form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+            #{/}
+            #{field 'compteur.commande'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                        <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                        
+                        <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                            #{if compteur.commande==null}#{/if}
+                            #{if compteur.commande!=null} ${compteur.commande.referenceCommande}#{/if}
+                            <b class="caret selectbox-caret"></b>
+                        </a> &nbsp;
+                        <span class="error-msg">${field.error}</span>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option">
+                                    <li><a href="#" data-option=""></a>
+                                    #{list items:entreeEnStocks, as:'entree'}
+                                    <li><a href="#" data-option="${entree.commande.id}">${entree.commande.referenceCommande}</a></li>
+                                    #{/list}
+                                </ul>
+                            </div>
+                        </div>                       
+                    </div>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'compteur.numeroCompteur'}
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="${field.id}">Code Agence:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'compteur.numeroSerieCompteur'}
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="${field.id}">Nom de l'agence:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" name="${field.name}" id="${field.id}" value="${field.value}"/>
+                    <span class="error-msg">${field.error}</span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            #{field 'compteur.puissance'}
+            <div class="form-group ${field.errorClass} offset2 span10">
+                <label class="col-sm-2 control-label" for="${field.id}">Adresse:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="Adresse"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            #{field 'compteur.caracterisques'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">Phone:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="Contact"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+            #{field 'compteur.typeCompteur'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">Agence:</label>
+                <div class="col-sm-4">
+                    <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                        <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                        
+                        <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                            #{if compteur.typeCompteur==null}#{/if}
+                            #{if compteur.typeCompteur!=null} ${compteur.typeCompteur.libelleCompteur}#{/if}
+                            <b class="caret selectbox-caret"></b>
+                        </a> &nbsp;
+                        <span class="error-msg">${field.error}</span>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option">
+                                    <li><a href="#" data-option=""></a>
+                                    #{list items:typeCompteurs, as:'typeCompteur'}
+                                    <li><a href="#" data-option="${typeCompteur.id}">${typeCompteur.libelleCompteur}</a></li>
+                                    #{/list}
+                                </ul>
+                            </div>
+                        </div>                       
+                    </div>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            <span class="fl-right" style="margin:25px 250px 25px 0px;line-height: 40px;">
+                <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                        flat-border-butt flat-primary-border-butt" >Valider</button>
+            </span>
+        </fieldset>
+    </div>
+</form>
+

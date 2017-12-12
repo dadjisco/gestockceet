@@ -1,0 +1,99 @@
+#{extends 'main.html' /}
+#{set title:'Accueil' /}
+
+%{
+userAccount = user.account.getClass().getSimpleName();
+agence = utils.config.AccountType.AGENCE.getName();
+magasinier = utils.config.AccountType.MAGASINIER.getName();
+soustraitant = utils.config.AccountType.SOUSTRAITANT.getName();
+}%
+<div class="container clearfix">
+    <div class="alert alert-warning alert-dismissable" style="text-align:center">  
+        <a class="close" data-dismiss="alert">x</a>  
+        <strong>Bienvenue sur l'espace Magasinier.</strong> Depuis cette interface, 
+        administrez le système dans son ensemble. 
+    </div> 
+
+    <div class="tabbable">
+        <ul class="nav nav-pills nav-stacked col-md-3 green-pills no-margin">
+            <li class="#{if action=='reception'}active#{/if}"><a href="#tabs5-pane1" data-toggle="tab">Effectuer Entrée</a></li>
+            <li class="#{if action=='liste_des_demandes'}active#{/if}"><a href="#tabs5-pane7" data-toggle="tab">Liste demandes arrivées</a></li>
+            <li class="#{if action=='creer_commande'}active#{/if}"><a href="#tabs5-pane5" data-toggle="tab">Créer Commande</a></li>
+            <li class="#{if action=='charger_compteur'}active#{/if}"><a href="#tabs5-pane6" data-toggle="tab">Charger Compteurs</a></li>
+            <li class="#{if action=='creer_compteur'}active#{/if}"><a href="#tabs5-pane4" data-toggle="tab">Créer & affecter Compteur</a></li>
+            <li class="#{if action=='affectation'}active#{/if}"><a href="#tabs5-pane2" data-toggle="tab">Sorties de Stock</a></li>
+            <li class="#{if action=='statistique_entree_sortie'}active#{/if}"><a href="#tabs5-pane3" data-toggle="tab">Statistiques des Entrées & Sorties</a></li>
+            
+        </ul>
+        <div class="tab-content col-md-9">
+            <div id="tabs5-pane1" class="tab-pane #{if action=='reception'}active#{/if}">
+                #{if action=='reception'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane2" class="tab-pane #{if action=='affectation'}active#{/if}">
+                #{if action=='affectation'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane3" class="tab-pane #{if action=='statistique_entree_sortie'}active#{/if}">
+                #{if action=='statistique_entree_sortie'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane4" class="tab-pane #{if action=='creer_compteur'}active#{/if}">
+                #{if action=='creer_compteur'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane5" class="tab-pane #{if action=='creer_commande'}active#{/if}">
+                #{if action=='creer_commande'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane6" class="tab-pane #{if action=='charger_compteur'}active#{/if}">
+                #{if action=='charger_compteur'}
+                #{doLayout /}
+                #{/if}
+            </div>
+            <div id="tabs5-pane7" class="tab-pane #{if action=='liste_des_demandes'}active#{/if}">
+                #{if action=='liste_des_demandes'}
+                #{doLayout /}
+                #{/if}
+            </div>
+        </div>
+    </div> 
+</div>
+
+<script>
+    $('a[href="#tabs5-pane1"]').click(function() {
+        window.location.href = "@{portals.magasinier.Reception.index()}";
+        e.preventDefault();
+    });
+        
+    $('a[href="#tabs5-pane2"]').click(function() {
+        window.location.href = "@{portals.magasinier.Affectation.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane3"]').click(function() {
+        window.location.href = "@{portals.magasinier.StatistiquesEntreesSorties.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane4"]').click(function() {
+        window.location.href = "@{portals.magasinier.Compteurs.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane5"]').click(function() {
+        window.location.href = "@{portals.magasinier.Commandes.index()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane6"]').click(function() {
+        window.location.href = "@{portals.magasinier.Compteurs.chargerCompteur()}";
+        e.preventDefault();
+    });
+    $('a[href="#tabs5-pane7"]').click(function() {
+        window.location.href = "@{portals.magasinier.Demandes.index()}";
+        e.preventDefault();
+    });
+</script>
+

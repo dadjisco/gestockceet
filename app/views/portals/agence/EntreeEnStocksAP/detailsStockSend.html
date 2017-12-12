@@ -1,0 +1,208 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Détails <span class="hightlight">du Stock </span> envoyé </h3>
+<form class="form-horizontal" action="@{saveEntreeEnStock}" method="POST" enctype="multipart/form-data">
+
+    <div class="tab-content">
+        #{ifErrors}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p><strong>Error(s)</strong> found!</p>
+            <ul>
+                #{errors}
+                <li>${error}</li>
+                #{/errors}
+            </ul>
+        </div>
+        #{/ifErrors}
+
+        #{if (flash.contains("success")) }
+        <div class="alert alert-success"  >
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            ${flash.get("success")}
+
+        </div>
+        #{/if}
+
+        <div class="row">
+            #{ifErrors}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <p><strong>Error(s)</strong> found!</p>
+                <ul>
+                    #{errors}
+                    *{#{if error.key != 'user' && error.key != 'address'}*
+                    *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+                    <li>${error}</li>
+                    *{#{/if}}*
+                    #{/errors}
+                </ul>
+            </div>
+            #{/ifErrors}
+            #{if (flash.contains("success")) }
+            <div class="alert alert-success"  >
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                ${flash.get("success")}
+
+            </div>
+            #{/if}
+        </div>
+        
+        <fieldset>
+            <legend>Nouvelle Entrée de Stock
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+</fieldset>
+    <div class="col-md-6">  
+        #{field 'refSortie'}
+            <input type="text" class="hide form-control" name="${field.name}" id="${field.id}" value="${sortieEnStock.id}"/>
+        #{/}
+<!--        #{field 'reference'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-4 control-label" for="${field.id}">&{field.name}:</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control ${field.errorClass}" disabled="true"
+                       name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}-->
+        #{field 'sortieEnStock.dateSortie'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-4 control-label" for="${field.id}">&{field.name}:</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control ${field.errorClass}" disabled="true"
+                       name="${field.name}" id="${field.id}" value="${field.value.format('dd MMMM yyyy','fr')}" placeholder="${field.name}"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+        #{field 'filePath'}
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="${field.id}"><b>Ajoutez un PV (img ou pdf)</b></label>
+            <div class="col-sm-8">
+                <input type="file" class="form-control ${field.errorClass}"
+                       name="${field.name}" id="files" accept="application/pdf/png/jpg" required="true"/>
+            </div>
+        </div>
+        #{/}       
+    </div>
+    <div class="col-md-6">
+        #{field 'sortieEnStock.nbCompteur'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-4 control-label" for="${field.id}">&{field.name}:</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control ${field.errorClass}" disabled="true"
+                       name="${field.name}" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+        #{field 'nbreConfirmer'}
+        <div class="form-group ${field.errorClass}">
+            <label class="col-sm-4 control-label" for="nbreConfirmer">&{field.name}:</label>
+            <div class="col-sm-8">
+                <input id="${field.name}" type="text" class="form-control ${field.errorClass}" onfocus="$(this).blur()"
+                       name="${field.name}" value="${field.value}" placeholder="${field.name}"/>
+                <span class="error-msg">${field.error} </span>
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+    </div>
+   <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        <input id="addAll" type="checkbox" onClick="checkAll(this)" value="true">
+                    </th>
+                    <th>numeroCompteur</th>
+                    <th>puissance</th>
+                    <th>typeCompteur</th>
+                    <th>Livraison</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:compteurs, as:'compteur'}
+                <tr>
+                    <th>
+                        <input id="addLine" name="idCompteur[]" type="checkbox" onClick="check(this)" value="${compteur.id}">
+                    </th>
+                    <td>${compteur.numeroCompteur}</td>
+                    <td>${compteur.puissance}</td>
+                    <td>${compteur.typeCompteur.libelleCompteur}</td>
+                    <td>${compteur.livraison.referenceLivraison}</td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+ 
+
+        <span class="fl-right">
+            <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                    flat-border-butt flat-primary-border-butt" >Valider</button>
+        </span>
+    
+    </div>
+</form> 
+
+<br/>
+
+<script>
+
+    $(document).ready(function () {
+     $('#example').DataTable();
+    });
+
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+
+    function checkAll(ele) {
+        var checkboxes = document.getElementsByTagName('input');
+        var cptSelect=-1;    // Pour compter le nombre de ligne sélectioné
+        if (ele.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = true;
+                    cptSelect+=1;
+                }
+            }
+        } else {
+            for (var i = 0; i < checkboxes.length; i++) {
+                console.log(i)
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = false;  
+                }
+            }
+            cptSelect=0;
+        }
+        document.getElementById('nbreConfirmer').value = cptSelect;
+    }
+
+    function check(ele) {
+        var checkboxes = document.getElementsByTagName('input');
+        if (ele.checked) {
+            document.getElementById('nbreConfirmer').value++;
+            document.getElementById('btnEntreeStock').style.visibility = 'visible';
+        } else {
+            document.getElementById('nbreConfirmer').value--;
+            document.getElementById('btnEntreeStock').style.visibility = 'hidden';
+        }
+    }
+</script>

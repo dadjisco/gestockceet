@@ -1,0 +1,138 @@
+#{set 'moreStyles'}
+#{stylesheet '../pwdwidget/pwdwidget.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../pwdwidget/pwdwidget.js' /}
+#{script '../pwdwidget/pwdwidget-custom.js' /}
+#{/set}
+
+<div class="row-fluid">
+    #{field 'user.id'}
+    <input type="hidden" name="${field.name}" id="${field.id}" value="${user.id}"/>
+    #{/}
+    #{field 'user.firstname'}
+    <div class="control-group ${field.errorClass}">
+        <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+        <div class="controls">
+            <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                   value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${user.lastname}#{/else}"/>
+            <span class="error-msg">${field.error}</span>
+
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    #{field 'user.lastname'}
+    <div class="control-group ${field.errorClass}">
+        <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+        <div class="controls">
+            <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                   value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${user.firstname}#{/else}"/>
+            <span class="error-msg">${field.error}</span>
+
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    #{field 'user.email'}
+    <div class="control-group ${field.errorClass}">
+        <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+        <div class="controls">
+            <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                   value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${user.email}#{/else}"/>
+            <span class="error-msg">${field.error}</span>
+
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    #{field 'user.username'}
+    <div class="control-group ${field.errorClass}">
+        <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+        <div class="controls">
+            <input type="text" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"
+                   value="#{ifErrors}${flash[field.name]}#{/ifErrors}#{else}${user.username}#{/else}"/>
+            <span class="error-msg">${field.error}</span>
+
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    #{field 'editPassword'}
+    <div class="control-group ${field.errorClass}">
+        <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+        <div class="controls">
+            <label class="checkbox">
+                <input type="checkbox" name="${field.name}" id="${field.id}"
+                       #{if flash.editPassword}checked="true"#{/if}>
+                       Changer le mot de passe
+            </label>
+
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    <div id="pwdInfo" class="display-none">
+        #{field 'currentPassword'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="password" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+        #{field 'user.password'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <div id='thepwddiv' class='pwdwidgetdiv input-xlarge'></div>
+                <span class="error-msg">${field.error}</span>
+                <script type="text/javascript">
+                    var pwdwidget = new PasswordWidget('thepwddiv', 'regpwd');
+                    pwdwidget.MakePWDWidget = _MakePWDWidgetCustom;
+                    pwdwidget.MakePWDWidget('${field.name}', '${field.id}', '${field.errorClass}', '${field.error}');
+                </script>
+                <noscript>
+                <div><input type='password' id='regpwd' name='regpwd'/></div>
+                </noscript>
+                *{<input type="password" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"/>
+                <span class="error-msg">${field.error}</span>}*
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+        #{field 'passwordCheck'}
+        <div class="control-group ${field.errorClass}">
+            <label class="control-label" for="${field.id}">&{field.name}:</label>
+
+            <div class="controls">
+                <input type="password" class="input-xlarge ${field.errorClass}" name="${field.name}" id="${field.id}"/>
+                <span class="error-msg">${field.error}</span>
+
+                <p class="help-block">Supporting help text</p>
+            </div>
+        </div>
+        #{/}
+    </div>
+    <!-- /#pwdInfo -->
+</div>
+
+<script>
+    $("#editPassword").click(function () {
+        if ($(this).is(':checked'))
+            $("#pwdInfo").show();  // checked
+        else
+            $("#pwdInfo").hide();  // unchecked
+    });
+</script>

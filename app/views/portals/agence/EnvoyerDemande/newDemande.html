@@ -1,0 +1,149 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Envoyer une dem<span class="hightlight">ande compteur</span> </h3>
+<form class="form-horizontal" action="@{saveNewDemande()}" method="POST" enctype="multipart/form-data" style="text-align: center;">                  
+    #{field 'filePath'}
+    <div class="form-group">
+        <label class="col-sm-4 control-label" for="${field.id}"><b>Attacher un fichier (img ou pdf)</b></label>
+        <div class="col-sm-4">
+            <input type="file" class="form-control ${field.errorClass}"
+                   name="${field.name}" id="files" accept="application/pdf/png/jpg" required="true"/>
+        </div>
+    </div>
+    #{/}
+    #{field 'dateDemande'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-4 control-label" for="${field.name}">&{field.name}:</label>
+        <div class="col-sm-4">
+            <input type="date" class="form-control ${field.errorClass}"
+                   name="${field.name}" id="${field.id}" value="${field.value}" required="true"/>
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    #{field 'destinataire'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-4 control-label" for="${field.id}">&{field.name}:</label>
+        <div class="col-sm-4">
+            <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+
+                <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                    <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                    <b class="caret selectbox-caret"></b>
+                </a> &nbsp;
+                <span class="error-msg">${field.error}</span>
+                <div class="bfh-selectbox-options">
+                    <input type="text" class="bfh-selectbox-filter">
+                    <div role="listbox">
+                        <ul role="option">
+                            <li><a href="#" data-option=""></a>
+                            #{list items:accounts, as:'acc'}
+                            #{if acc instanceof models.Agence}
+                                <li><a href="#" data-option="${acc.id}">${acc.nomAgence}</a></li>
+                            #{/if}
+                            #{if acc instanceof models.Magasinier}
+                                <li><a href="#" data-option="${acc.id}">${acc}</a></li>
+                            #{/if}
+                            #{/list}
+                        </ul>
+                    </div>
+                </div>                       
+            </div>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+
+    <div class="controls">
+        <div class="numUniteCompteur-parent">
+            <div id="numUniteCompteur" class="mg-top">
+    #{field 'typeCompteur'}
+    <div class="form-group ${field.errorClass}">
+        <label class="col-sm-4 control-label" for="${field.id}">&{field.name}:</label>
+        <div class="col-sm-4">
+            <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                <input name="${field.name}[]" id="${field.id}" type="hidden" value="${flash[field.name]}">
+
+                <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                    <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                    <b class="caret selectbox-caret"></b>
+                </a> &nbsp;
+                <span class="error-msg">${field.error}</span>
+                <div class="bfh-selectbox-options">
+                    <input type="text" class="bfh-selectbox-filter">
+                    <div role="listbox">
+                        <ul role="option">
+                            <li><a href="#" data-option=""></a>
+                            #{list items:typeCompteurs, as:'typeCompteur'}
+                            <li><a href="#" data-option="${typeCompteur.id}">${typeCompteur.libelleCompteur}</a></li>
+                            #{/list}
+                        </ul>
+                    </div>
+                </div>                       
+            </div>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+    #{field 'nbDUnite'}
+    <div class="form-group ${field.errorClass}" id="nbDUnite">
+        <label class="col-sm-4 control-label" for="${field.id}">&{field.name}:</label>
+        <div class="col-sm-4">
+            <input type="number" class="form-control ${field.errorClass}"
+                   name="${field.name}[]" id="${field.id}" value="${field.value}" placeholder="${field.name}"/>
+            <span class="error-msg">${field.error} </span>
+            <p class="help-block">Supporting help text</p>
+        </div>
+    </div>
+    #{/}
+     <button type="button" onclick="removeNbreCompteur(this)"
+            class="btn btn-mini btn-danger removerEl hidden" style="margin-left: 40%;">
+                            <i class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                </div>
+                <button id="addddd" type="button" class="btn btn-mini btn-info mg-top"
+                        onclick="clonerNbreCompteur()" style="margin-left: 40%;">
+                    <i class="glyphicon glyphicon-plus"></i></button>
+            </div>                    
+            <div class="form-group">
+                <div class="col-sm-4 text-right">
+                <button id="demandeSubmit" type="submit"  class="btn btn-default flat-butt flat-primary-butt
+                flat-border-butt flat-primary-border-butt" >Envoyer</button>
+                </div>
+            </div> 
+</form>
+<br/>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        
+    }); 
+
+    var j = 1;
+    function clonerNbreCompteur() {
+        j++;
+        var clone = $("#numUniteCompteur").clone();
+        clone.find(".removerEl").removeClass("hidden");
+        var $placeholder = clone.find(".title").attr("placeholder", "N° " + j);
+        $(".numUniteCompteur-parent").append(clone);
+    }
+
+    function removeNbreCompteur(me) {
+        $(me).parent().remove();
+    }
+</script>

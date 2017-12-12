@@ -1,0 +1,194 @@
+#{extends '/portals/admin/Dashboard/index.html' /}
+#{set title:'CGTBUILDER' /}
+
+#{set 'moreStyles'}
+#{stylesheet '../pwdwidget/pwdwidget.css' /}
+#{/set}
+
+#{set 'moreStyles'}
+#{stylesheet '../datatables-1.9.4/styles/jquery.dataTables.css' /}
+#{/set}
+
+#{set 'moreScripts'}
+#{script '../datatables-1.9.4/jquery.dataTables.min.js' /}
+#{/set}
+
+<h3 class="bg-gray-title">nouveau <span class="hightlight">Magasin </span>  <span class="hightlight">CEET</span> </h3>
+
+
+<div class="row-fluid">
+    #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            *{#{if error.key != 'user' && error.key != 'address'}*
+            *{&& error.key != 'country' && error.key != 'privateAcc'}}*
+            <li>${error}</li>
+            *{#{/if}}*
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+</div>
+<form class="form-horizontal" action="@{saveNewMagasin()}" method="POST">
+    <div class="row">
+        <fieldset>
+            <legend>Nouveau magasin
+                <button type=button id="cancelEditProfil" class="btn btn-default legend-btn flat-butt flat-danger-butt"
+                        onClick="window.location.href = '@{index()}'">
+                    <i class="icon-ban-circle icon-white"></i>
+                    Annuler
+                </button>
+            </legend>
+
+            #{field 'codeMagasin'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">Code Magasin:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="Code magasin"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+
+            #{field 'nomMagasin'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">Nom Magasin:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="Nom magasin"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            #{field 'adresse'}
+            <div class="form-group ${field.errorClass} offset2 span10">
+                <label class="col-sm-2 control-label" for="${field.id}">Adresse:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="Adresse"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            #{field 'phone'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">Phone:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="Contact"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            #{field 'latitude'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="Latitude"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+                        
+            #{field 'longitude'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control ${field.errorClass}"
+                           name="${field.name}" id="${field.id}" value="${field.value}" placeholder="Longitude"/>
+                    <span class="error-msg">${field.error} </span>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            #{field 'agence'}
+            <div class="form-group ${field.errorClass}">
+                <label class="col-sm-2 control-label" for="${field.id}">&{field.name}:</label>
+                <div class="col-sm-4">
+                    <div class="bfh-selectbox control-bfh-selectbox-x ${field.errorClass}">
+                        <input name="${field.name}" id="${field.id}" type="hidden" value="${flash[field.name]}">
+                        
+                        <a class="bfh-selectbox-toggle form-control" role="button" data-toggle="bfh-selectbox" href="#">
+                            <span class="bfh-selectbox-option" data-option="">${flash['field.name']}</span>
+                            <b class="caret selectbox-caret"></b>
+                        </a> &nbsp;
+                        <span class="error-msg">${field.error}</span>
+                        <div class="bfh-selectbox-options">
+                            <input type="text" class="bfh-selectbox-filter">
+                            <div role="listbox">
+                                <ul role="option">
+                                    <li><a href="#" data-option=""></a>
+                                    #{list items:agences, as:'agence'}
+                                    <li><a href="#" data-option="${agence.id}">${agence.nomAgence}</a></li>
+                                    #{/list}
+                                </ul>
+                            </div>
+                        </div>                       
+                    </div>
+                    <p class="help-block">Supporting help text</p>
+                </div>
+            </div>
+            #{/}
+            
+            <span class="fl-right" style="margin:0px 250px 25px 0px; line-height: 40px;">
+                <button type="submit" id="signin" class="btn btn-default flat-butt flat-primary-butt
+                        flat-border-butt flat-primary-border-butt" >Valider</button>
+            </span>
+            <div style="clear: both" ></div>
+
+        </fieldset>
+    </div>
+</form>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#myTab a").click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('#filtreByCompte').click(function (e) {
+            $('.blc-comptes').show();
+            $('.blc-users').hide();
+        });
+        $('#filtreByUser').click(function (e) {
+            $('.blc-users').show();
+            $('.blc-comptes').hide();
+        });
+
+        $('.bfh-selectbox-options ul li').click(function () {
+            $('#nomPartner').val($(this).find('a').html());
+        });
+
+            $('.reg-select').click(function() {
+
+                    $().bfhselectbox('toggle');
+
+            });
+    });
+
+
+</script>

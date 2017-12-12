@@ -1,0 +1,77 @@
+#{extends '/portals/agence/Dashboard/index.html' /}
+#{set 'moreStyles'}
+#{stylesheet '../1/datatables.min.css' /}
+#{/set}
+#{set 'moreScripts'}
+#{script '../1/datatables.min.js' /}
+#{/set}
+
+
+<h3 class="bg-gray-title">Compteurs affectés <span class="hightlight"> pour la pose</span> </h3>
+<div class="tab-content">
+        #{ifErrors}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p><strong>Error(s)</strong> found!</p>
+        <ul>
+            #{errors}
+            <li>${error}</li>
+            #{/errors}
+        </ul>
+    </div>
+    #{/ifErrors}
+
+    #{if (flash.contains("success")) }
+    <div class="alert alert-success"  >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        ${flash.get("success")}
+
+    </div>
+    #{/if}
+</div>
+<fieldset>
+    <legend>
+        Compteurs en attente de Pose
+    </legend>
+</fieldset>
+<div class="tab-content">
+    <table id="tablo" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>numeroCompteur</th>
+                    <th>puissance</th>
+                    <th>typeCompteur</th>
+                    <th>Passer à la Pose</th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:compteurs, as:'compteur'}
+                <tr>
+                    <td>${compteur.numeroCompteur}</td>
+                    <td>${compteur.puissance}</td>
+                    <td>${compteur.typeCompteur.libelleCompteur}</td>
+                    <td>
+                        <a class="dataTable-icon" href="@{portals.agence.PoserCompteurs.effectuerPose(compteur.id)}"><img src="@{'/public/images/icons/tag_blue_edit.png'}" alt="edit"></a>
+                    </td>
+                </tr>
+                #{/list}
+            </tbody>
+        </table>
+</div>
+<style>
+    table td{
+        text-align: center;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        $('#tablo').DataTable();
+    });
+    
+    function confirmDelete(me, link) {
+        if (confirm("Confirmer la supression de : " + $(me).parent().parent().children().first().next().html()))
+            window.location = link;
+    }
+
+</script>
